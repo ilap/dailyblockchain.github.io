@@ -8,7 +8,6 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="js/vivagraph.js"></script>
     <script type="text/javascript" src="js/webgl-programs.js"></script>
-    <script type="text/javascript" src="js/Clients_b.js"></script>
     <style>
         body {
             margin: 0;
@@ -86,12 +85,10 @@
 <script language="javascript" type="text/javascript">
     // viva graph part 
     var graphics = Viva.Graph.View.webglGraphics();
-    writeToScreen("SSSSSSSS:");
-    var client = Client;
+    var Client = require('node-rest-client').Client;
 
-    writeToScreen(JSON.stringify(client));
-    //client.registerMethod("getAllTxs", "http://cardanoexplorer.com/api/txs/last", "GET");
-    //client.registerMethod("getTxSummary", "http://cardanoexplorer.com/api/txs/summary/${id}", "GET");
+    client.registerMethod("getAllTxs", "http://cardanoexplorer.com/api/txs/last", "GET");
+    client.registerMethod("getTxSummary", "http://cardanoexplorer.com/api/txs/summary/${id}", "GET");
 
     var args = {
         path: {
@@ -101,6 +98,7 @@
             "test-header": "client-api"
         }
     }
+
     var isWebgl = graphics.isSupported();
     if (!isWebgl) {
         alert("Turn on webgl or use modern browser");
@@ -197,11 +195,11 @@
                     }
                 });
 
-                //document.getElementById("info").innerHTML = label + "<br/>" + id + "<br/>balance: " + balance + " BTC";
+                document.getElementById("info").innerHTML = label + "<br/>" + id + "<br/>balance: " + balance + " BTC";
 
             } else {
                 // transaction node
-                //document.getElementById("info").innerHTML = label + "<br/>" + id;
+                document.getElementById("info").innerHTML = label + "<br/>" + id;
             }
         };
 
@@ -308,8 +306,8 @@
 
     function init() {
         output = document.getElementById("output");
-        //testWebSocket();
-        testRestAPI();
+        testWebSocket();
+        //testRestAPI();
     }
 
 
@@ -372,6 +370,90 @@
         websocket.onerror = function (evt) {
             onError(evt)
         };
+    }
+
+    function testRestAPI() {
+
+        client.methods.getAllTxs(function (data, response) {
+            // parsed response body as js object 
+            console.log(data);
+            processData(data.Right)
+            // raw response 
+            //console.log(response);
+            setTimeout(function () {
+                getNodes()
+            }, 3000);
+        });
+    }
+
+
+    function processData(data) {
+        // parse message
+        if (data.length === 0) {
+            return
+        }
+
+        for (var i = 0; i < data.length; i++) {
+            var txHash = data[i].cteId;
+
+            args.path.id = txHash
+            var node = {}
+
+            client.methods.getTxSummary(args, function (msg, response) {
+                var node = msg.Right
+
+                var links = [];
+                var inputs = node.ctsInputs;
+                var outputs = node.ctsOutputs;
+
+
+                for (var i = 0; i < inputs.length; i++) {
+                    var input = inputs[i];
+                    links.push({
+                        from: input[0],
+                        to: txHash,
+                        value: input[1].getCoin,
+                        t: "i"
+                    });
+                }
+                for (var j = 0; j < outputs.length; j++) {
+                    var output = outputs[j];
+                    links.push({
+                        from: txHash,
+                        to: output[0],
+                        value: output[1].getCoin,
+                        t: "o"
+                    });
+                }
+
+                // flush the buffer if not empty
+                if (!paused && linksBuffer.length > 0) {
+                    for (var i = 0; i < linksBuffer.length; i++) {
+                        var link = linksBuffer[i];
+
+                        addNodes(link)
+                        graph.addLink(link.from, link.to);
+                    }
+                    linksBuffer = [];
+                }
+
+                for (var i = 0; i < links.length; i++) {
+                    var link = links[i];
+                    if (link.value > maxNodeSize) {
+                        maxNodeSize = link.value;
+                    }
+
+                    if (!paused) {
+                        addNodes(link);
+                        graph.addLink(link.from, link.to);
+                    } else {
+                        // add links to a buffer
+                        linksBuffer.push(link);
+                    }
+
+                }
+            });
+        }
     }
 
     function onOpen(evt) {
@@ -440,7 +522,7 @@
                 // add links to a buffer
                 linksBuffer.push(link);
             }
-            writeToScreen('<span style="color: blue;">from: ' + link.from+' to ' +link.to+' value: '+ (link.value/100000000)+'</span>'); 
+            //writeToScreen('<span style="color: blue;">from: ' + link.from+' to ' +link.to+' value: '+ (link.value/100000000)+'</span>'); 
         }
         //websocket.close(); 
     }
@@ -455,100 +537,11 @@
     }
 
     function writeToScreen(message) {
-        //var pre = document.createElement("p");
-        //pre.style.wordWrap = "break-word";
-        //pre.innerHTML = message;
-       // output.appendChild(pre);
-        //console.log("DDDDDDDDDDDDDDDDDDD ")
-        document.getElementById("info").innerHTML =  "<br/>" + message ;
+        var pre = document.createElement("p");
+        pre.style.wordWrap = "break-word";
+        pre.innerHTML = message;
+        output.appendChild(pre);
     }
-
-    function testRestAPI() {
-        //writeToScreen('TEEEEEESSSSS')
-client.methods.getAllTxs(function (data, response) {
-    // parsed response body as js object 
-    console.log(data);
-    writeToScreen('DATA:' + data); 
-    processData(data.Right)
-    // raw response 
-    //console.log(response);
-    setTimeout(function () {
-        getNodes()
-    }, 3000);
-});
-}
-
-
-function processData(data) {
-// parse message
-if (data.length === 0) {
-    return
-}
-
-for (var i = 0; i < data.length; i++) {
-    var txHash = data[i].cteId;
-
-    args.path.id = txHash
-    var node = {}
-
-    client.methods.getTxSummary(args, function (msg, response) {
-        var node = msg.Right
-
-        writeToScreen('NIDE:' + node); 
-
-        var links = [];
-        var inputs = node.ctsInputs;
-        var outputs = node.ctsOutputs;
-
-
-        for (var i = 0; i < inputs.length; i++) {
-            var input = inputs[i];
-            links.push({
-                from: input[0],
-                to: txHash,
-                value: input[1].getCoin,
-                t: "i"
-            });
-        }
-        for (var j = 0; j < outputs.length; j++) {
-            var output = outputs[j];
-            links.push({
-                from: txHash,
-                to: output[0],
-                value: output[1].getCoin,
-                t: "o"
-            });
-        }
-
-        // flush the buffer if not empty
-        if (!paused && linksBuffer.length > 0) {
-            for (var i = 0; i < linksBuffer.length; i++) {
-                var link = linksBuffer[i];
-
-                addNodes(link)
-                graph.addLink(link.from, link.to);
-            }
-            linksBuffer = [];
-        }
-
-        for (var i = 0; i < links.length; i++) {
-            var link = links[i];
-            if (link.value > maxNodeSize) {
-                maxNodeSize = link.value;
-            }
-
-            if (!paused) {
-                addNodes(link);
-                graph.addLink(link.from, link.to);
-            } else {
-                // add links to a buffer
-                linksBuffer.push(link);
-            }
-
-        }
-    });
-}
-}
 
     window.addEventListener("load", init, false);
     window.l = layout;
@@ -570,6 +563,7 @@ for (var i = 0; i < data.length; i++) {
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
   ga('create', 'UA-46634113-1', 'dailyblockchain.github.io');
-  ga('send', 'pageview');
+  ga('send', 'pageview'); -->
 </script>
+
 </html>

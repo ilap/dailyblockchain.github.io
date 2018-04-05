@@ -6,7 +6,7 @@ Credits:
 
 # Install
 
- $ npm install connect serve-static
+ $ npm install connect serve-static node-rest-client
 
  $ node server.js
 
