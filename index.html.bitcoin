@@ -311,18 +311,17 @@ var events = Viva.Graph.webglInputEvents(graphics, graph),
         } 
      }
 
-    function testWebSocket() { 
+     function testWebSocket() { 
      	websocket = new WebSocket(wsUri); 
      	websocket.onopen = function(evt) { onOpen(evt) };
      	websocket.onclose = function(evt) { onClose(evt) }; 
      	websocket.onmessage = function(evt) { onMessage(evt) };
-        websocket.onerror = function(evt) { onError(evt) }; 
-    }  
+     	websocket.onerror = function(evt) { onError(evt) }; }  
 
-    function onOpen(evt) { 
+     	function onOpen(evt) { 
      		writeToScreen("CONNECTED"); 
      		doSend({"op":"unconfirmed_sub"}); 
-    }
+     	}
      	
      	function onClose(evt) { writeToScreen("DISCONNECTED"); }  
      	
@@ -422,6 +421,6 @@ var events = Viva.Graph.webglInputEvents(graphics, graph),
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
   ga('create', 'UA-46634113-1', 'dailyblockchain.github.io');
-  ga('send', 'pageview'); -->
+  ga('send', 'pageview');
 </script>
 </html>

@@ -15,7 +15,9 @@ Viva.Graph.version = '0.4.1';
  */
 Viva.lazyExtend = function (target, options) {
     var key;
-    if (!target) { target = {}; }
+    if (!target) {
+        target = {};
+    }
     if (options) {
         for (key in options) {
             if (options.hasOwnProperty(key)) {
@@ -149,7 +151,7 @@ Viva.random = function () {
          *
          * @param maxValue is REQUIRED. Ommitit this numbe will result in NaN values from PRNG.
          */
-        next : function (maxValue) {
+        next: function (maxValue) {
             return Math.floor(randomFunc() * maxValue);
         },
 
@@ -157,7 +159,7 @@ Viva.random = function () {
          * Generates random double number in the range from 0 (inclusive) to 1 (exclusive)
          * This function is the same as Math.random() (except that it could be seeded)
          */
-        nextDouble : function () {
+        nextDouble: function () {
             return randomFunc();
         }
     };
@@ -177,7 +179,7 @@ Viva.randomIterator = function (array, random) {
     random = random || Viva.random();
 
     return {
-        forEach : function (callback) {
+        forEach: function (callback) {
             var i, j, t;
             for (i = array.length - 1; i > 0; --i) {
                 j = random.next(i + 1); // i inclusive
@@ -196,7 +198,7 @@ Viva.randomIterator = function (array, random) {
         /**
          * Shuffles array randomly.
          */
-        shuffle : function () {
+        shuffle: function () {
             var i, j, t;
             for (i = array.length - 1; i > 0; --i) {
                 j = random.next(i + 1); // i inclusive
@@ -212,8 +214,8 @@ Viva.randomIterator = function (array, random) {
 Viva.BrowserInfo = (function () {
     if (typeof window === "undefined" || !window.hasOwnProperty("navigator")) {
         return {
-            browser : "",
-            version : "0"
+            browser: "",
+            version: "0"
         };
     }
 
@@ -224,10 +226,9 @@ Viva.BrowserInfo = (function () {
         rmsie = /(msie) ([\w.]+)/,
         rmozilla = /(mozilla)(?:.*? rv:([\w.]+))?/,
         match = rwebkit.exec(ua) ||
-                ropera.exec(ua) ||
-                rmsie.exec(ua) ||
-                (ua.indexOf("compatible") < 0 && rmozilla.exec(ua)) ||
-                [];
+        ropera.exec(ua) ||
+        rmsie.exec(ua) ||
+        (ua.indexOf("compatible") < 0 && rmozilla.exec(ua)) || [];
 
     return {
         browser: match[1] || "",
@@ -261,7 +262,7 @@ Viva.Graph.Utils = Viva.Graph.Utils || {};
 Viva.Graph.Utils.getDimension = function (container) {
     if (!container) {
         throw {
-            message : 'Cannot get dimensions of undefined container'
+            message: 'Cannot get dimensions of undefined container'
         };
     }
 
@@ -270,10 +271,10 @@ Viva.Graph.Utils.getDimension = function (container) {
     var height = container.clientHeight;
 
     return {
-        left : 0,
-        top : 0,
-        width : width,
-        height : height
+        left: 0,
+        top: 0,
+        width: width,
+        height: height
     };
 };
 
@@ -291,7 +292,8 @@ Viva.Graph.Utils.findElementPosition = function (obj) {
     }
 
     return [curleft, curtop];
-};/**
+};
+/**
  * @author Andrei Kashcha (aka anvaka) / http://anvaka.blogspot.com
  */
 
@@ -408,8 +410,8 @@ Viva.Graph.Utils.events = function (element) {
         /**
          * Registes callback to be called when element fires event with given event name.
          */
-        on : function (eventName, callback) {
-            if (element.addEventListener) {// W3C DOM and eventuality objecets.
+        on: function (eventName, callback) {
+            if (element.addEventListener) { // W3C DOM and eventuality objecets.
                 element.addEventListener(eventName, callback, false);
             } else if (element.attachEvent) { // IE DOM
                 element.attachEvent("on" + eventName, callback);
@@ -421,7 +423,7 @@ Viva.Graph.Utils.events = function (element) {
         /**
          * Unsubcribes from object's events.
          */
-        stop : function (eventName, callback) {
+        stop: function (eventName, callback) {
             if (element.removeEventListener) {
                 element.removeEventListener(eventName, callback, false);
             } else if (element.detachEvent) {
@@ -435,11 +437,12 @@ Viva.Graph.Utils.events = function (element) {
          *
          * This is required if you want to use object with on(), stop() methods.
          */
-        extend : function () {
+        extend: function () {
             return eventuality(element);
         }
     };
-};/**
+};
+/**
  * @author Andrei Kashcha (aka anvaka) / http://anvaka.blogspot.com
  */
 
@@ -484,7 +487,10 @@ Viva.Graph.Utils.dragndrop = function (element) {
 
         move = function (e, clientX, clientY) {
             if (drag) {
-                drag(e, {x : clientX - startX, y : clientY - startY });
+                drag(e, {
+                    x: clientX - startX,
+                    y: clientY - startY
+                });
             }
 
             startX = clientX;
@@ -492,10 +498,16 @@ Viva.Graph.Utils.dragndrop = function (element) {
         },
 
         stopPropagation = function (e) {
-            if (e.stopPropagation) { e.stopPropagation(); } else { e.cancelBubble = true; }
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            } else {
+                e.cancelBubble = true;
+            }
         },
         preventDefault = function (e) {
-            if (e.preventDefault) { e.preventDefault(); }
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
         },
 
         handleDisabledEvent = function (e) {
@@ -528,7 +540,12 @@ Viva.Graph.Utils.dragndrop = function (element) {
                 // TODO: bump zIndex?
                 dragObject = e.target || e.srcElement;
 
-                if (start) { start(e, {x: startX, y : startY}); }
+                if (start) {
+                    start(e, {
+                        x: startX,
+                        y: startY
+                    });
+                }
 
                 documentEvents.on('mousemove', handleMouseMove);
                 documentEvents.on('mouseup', handleMouseUp);
@@ -556,7 +573,9 @@ Viva.Graph.Utils.dragndrop = function (element) {
             window.document.onselectstart = prevSelectStart;
             dragObject.ondragstart = prevDragStart;
             dragObject = null;
-            if (end) { end(e); }
+            if (end) {
+                end(e);
+            }
         },
 
         handleMouseWheel = function (e) {
@@ -606,9 +625,9 @@ Viva.Graph.Utils.dragndrop = function (element) {
             scroll = scrollCallback;
         },
 
-        getPinchZoomLength = function(finger1, finger2) {
+        getPinchZoomLength = function (finger1, finger2) {
             return (finger1.clientX - finger2.clientX) * (finger1.clientX - finger2.clientX) +
-                   (finger1.clientY - finger2.clientY) * (finger1.clientY - finger2.clientY);
+                (finger1.clientY - finger2.clientY) * (finger1.clientY - finger2.clientY);
         },
 
         handleTouchMove = function (e) {
@@ -626,7 +645,10 @@ Viva.Graph.Utils.dragndrop = function (element) {
                 } else if (currentPinchLength > pinchZoomLength) {
                     delta = 1;
                 }
-                scroll(e, delta, {x: e.touches[0].clientX, y: e.touches[0].clientY});
+                scroll(e, delta, {
+                    x: e.touches[0].clientX,
+                    y: e.touches[0].clientY
+                });
                 pinchZoomLength = currentPinchLength;
                 stopPropagation(e);
                 preventDefault(e);
@@ -639,7 +661,9 @@ Viva.Graph.Utils.dragndrop = function (element) {
             documentEvents.stop('touchend', handleTouchEnd);
             documentEvents.stop('touchcancel', handleTouchEnd);
             dragObject = null;
-            if (end) { end(e); }
+            if (end) {
+                end(e);
+            }
         },
 
         handleSignleFingerTouch = function (e, touch) {
@@ -651,7 +675,12 @@ Viva.Graph.Utils.dragndrop = function (element) {
 
             dragObject = e.target || e.srcElement;
 
-            if (start) { start(e, {x: startX, y : startY}); }
+            if (start) {
+                start(e, {
+                    x: startX,
+                    y: startY
+                });
+            }
             // TODO: can I enter into the state when touch is in progress
             // but it's still a single finger touch?
             if (!touchInProgress) {
@@ -682,17 +711,17 @@ Viva.Graph.Utils.dragndrop = function (element) {
     elementEvents.on('touchstart', handleTouchStart);
 
     return {
-        onStart : function (callback) {
+        onStart: function (callback) {
             start = callback;
             return this;
         },
 
-        onDrag : function (callback) {
+        onDrag: function (callback) {
             drag = callback;
             return this;
         },
 
-        onStop : function (callback) {
+        onStop: function (callback) {
             end = callback;
             return this;
         },
@@ -700,12 +729,12 @@ Viva.Graph.Utils.dragndrop = function (element) {
         /**
          * Occurs when mouse wheel event happens. callback = function(e, scrollDelta, scrollPoint);
          */
-        onScroll : function (callback) {
+        onScroll: function (callback) {
             updateScrollEvents(callback);
             return this;
         },
 
-        release : function () {
+        release: function () {
             // TODO: could be unsafe. We might wanna release dragObject, etc.
             documentEvents.stop('mousemove', handleMouseMove);
             documentEvents.stop('mousedown', handleMouseDown);
@@ -736,7 +765,7 @@ Viva.Input.domInputManager = function () {
          *   onDrag: function(e, offset),
          *   onStop: function()
          */
-        bindDragNDrop : function (node, handlers) {
+        bindDragNDrop: function (node, handlers) {
             if (handlers) {
                 var events = Viva.Graph.Utils.dragndrop(node.ui);
                 if (typeof handlers.onStart === 'function') {
@@ -796,7 +825,7 @@ Viva.Graph.spatialIndex = function (graph, toleranceOrCheckCallback) {
                 var pos = node.position;
 
                 if (pos.x - tolerance < x && x < pos.x + tolerance &&
-                        pos.y - tolerance < y && y < pos.y + tolerance) {
+                    pos.y - tolerance < y && y < pos.y + tolerance) {
 
                     foundNode = node;
                     return true;
@@ -809,7 +838,7 @@ Viva.Graph.spatialIndex = function (graph, toleranceOrCheckCallback) {
 
 
     return {
-        getNodeAt : getNodeFunction
+        getNodeAt: getNodeFunction
     };
 };
 /**
@@ -845,7 +874,9 @@ Viva.Graph.Utils = Viva.Graph.Utils || {};
         scope.requestAnimationFrame = function (callback) {
             var currTime = new Date().getTime();
             var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-            var id = scope.setTimeout(function () { callback(currTime + timeToCall); }, timeToCall);
+            var id = scope.setTimeout(function () {
+                callback(currTime + timeToCall);
+            }, timeToCall);
             lastTime = currTime + timeToCall;
             return id;
         };
@@ -883,24 +914,28 @@ Viva.Graph.Utils = Viva.Graph.Utils || {};
              */
             stop: stopTimer,
 
-            restart : function () {
+            restart: function () {
                 if (!intervalId) {
                     startTimer();
                 }
             }
         };
     };
-}());Viva.Graph.geom = function () {
+}());
+Viva.Graph.geom = function () {
 
     return {
         // function from Graphics GEM to determine lines intersection:
         // http://www.opensource.apple.com/source/graphviz/graphviz-498/graphviz/dynagraph/common/xlines.c
-        intersect : function (x1, y1, x2, y2, // first line segment
-                            x3, y3, x4, y4) { // second line segment
+        intersect: function (x1, y1, x2, y2, // first line segment
+            x3, y3, x4, y4) { // second line segment
             var a1, a2, b1, b2, c1, c2, /* Coefficients of line eqns. */
-                r1, r2, r3, r4,         /* 'Sign' values */
-                denom, offset, num,     /* Intermediate values */
-                result = { x: 0, y : 0};
+                r1, r2, r3, r4, /* 'Sign' values */
+                denom, offset, num, /* Intermediate values */
+                result = {
+                    x: 0,
+                    y: 0
+                };
 
             /* Compute a1, b1, c1, where line joining points 1 and 2
              * is "a1 x  +  b1 y  +  c1  =  0".
@@ -965,19 +1000,19 @@ Viva.Graph.Utils = Viva.Graph.Utils || {};
             return result;
         },
 
-          /**
-           * Returns intersection point of the rectangle defined by
-           * left, top, right, bottom and a line starting in x1, y1
-           * and ending in x2, y2;
-           */
-        intersectRect : function (left, top, right, bottom, x1, y1, x2, y2) {
+        /**
+         * Returns intersection point of the rectangle defined by
+         * left, top, right, bottom and a line starting in x1, y1
+         * and ending in x2, y2;
+         */
+        intersectRect: function (left, top, right, bottom, x1, y1, x2, y2) {
             return this.intersect(left, top, left, bottom, x1, y1, x2, y2) ||
-                   this.intersect(left, bottom, right, bottom, x1, y1, x2, y2) ||
-                   this.intersect(right, bottom, right, top, x1, y1, x2, y2) ||
-                   this.intersect(right, top, left, top, x1, y1, x2, y2);
+                this.intersect(left, bottom, right, bottom, x1, y1, x2, y2) ||
+                this.intersect(right, bottom, right, top, x1, y1, x2, y2) ||
+                this.intersect(right, top, left, top, x1, y1, x2, y2);
         },
 
-        convexHull : function (points) {
+        convexHull: function (points) {
             var polarAngleSort = function (basePoint, points) {
                     var cosAngle = function (p) {
                             var dx = p.x - basePoint.x,
@@ -1075,7 +1110,8 @@ Viva.Graph.Utils = Viva.Graph.Utils || {};
             return s;
         }
     };
-};/**
+};
+/**
  * Very generic rectangle. 
  */
 Viva.Graph.Rect = function (x1, y1, x2, y2) {
@@ -1109,7 +1145,8 @@ Viva.Graph.Link = function (fromId, toId, data) {
     this.fromId = fromId;
     this.toId = toId;
     this.data = data;
-};/**
+};
+/**
  * @fileOverview Contains definition of the core graph object.
  *
  * @author Andrei Kashcha (aka anvaka) / http://anvaka.blogspot.com
@@ -1165,20 +1202,26 @@ Viva.Graph.graph = function () {
 
         recordNodeChange = function (node, changeType) {
             // TODO: Could add changeType verification.
-            changes.push({node : node, changeType : changeType});
+            changes.push({
+                node: node,
+                changeType: changeType
+            });
         },
 
         recordLinkChange = function (link, changeType) {
             // TODO: Could add change type verification;
-            changes.push({link : link, changeType : changeType});
+            changes.push({
+                link: link,
+                changeType: changeType
+            });
         },
 
         isArray = function (value) {
             return value &&
-                   typeof value === 'object' &&
-                   typeof value.length === 'number' &&
-                   typeof value.splice === 'function' &&
-                   !(value.propertyIsEnumerable('length'));
+                typeof value === 'object' &&
+                typeof value.length === 'number' &&
+                typeof value.splice === 'function' &&
+                !(value.propertyIsEnumerable('length'));
         };
 
     /** @scope Viva.Graph.graph */
@@ -1194,7 +1237,7 @@ Viva.Graph.graph = function () {
          *
          * @return {node} The newly added node or node with given id if it already exists.
          */
-        addNode : function (nodeId, data) {
+        addNode: function (nodeId, data) {
             if (typeof nodeId === 'undefined') {
                 throw {
                     message: 'Invalid node identifier'
@@ -1219,7 +1262,7 @@ Viva.Graph.graph = function () {
                     name;
 
                 if (dataType === 'string' || isArray(data) ||
-                        dataType === 'number' || dataType === 'boolean') {
+                    dataType === 'number' || dataType === 'boolean') {
                     augmentedData = data;
                 } else if (dataType === 'undefined') {
                     augmentedData = null;
@@ -1251,7 +1294,7 @@ Viva.Graph.graph = function () {
          *
          * @return {link} The newly created link
          */
-        addLink : function (fromId, toId, data) {
+        addLink: function (fromId, toId, data) {
             enterModification();
 
             var fromNode = this.getNode(fromId) || this.addNode(fromId);
@@ -1279,10 +1322,14 @@ Viva.Graph.graph = function () {
          *
          * @returns true if link was removed; false otherwise.
          */
-        removeLink : function (link) {
-            if (!link) { return false; }
+        removeLink: function (link) {
+            if (!link) {
+                return false;
+            }
             var idx = Viva.Graph.Utils.indexOfElementInArray(link, links);
-            if (idx < 0) { return false; }
+            if (idx < 0) {
+                return false;
+            }
 
             enterModification();
 
@@ -1322,7 +1369,9 @@ Viva.Graph.graph = function () {
          */
         removeNode: function (nodeId) {
             var node = this.getNode(nodeId);
-            if (!node) { return false; }
+            if (!node) {
+                return false;
+            }
 
             enterModification();
 
@@ -1347,7 +1396,7 @@ Viva.Graph.graph = function () {
          *
          * @return {node} in with requested identifier or undefined if no such node exists.
          */
-        getNode : function (nodeId) {
+        getNode: function (nodeId) {
             return nodes[nodeId];
         },
 
@@ -1356,14 +1405,14 @@ Viva.Graph.graph = function () {
          *
          * @return number of nodes in the graph.
          */
-        getNodesCount : function () {
+        getNodesCount: function () {
             return nodesCount;
         },
 
         /**
          * Gets total number of links in the graph.
          */
-        getLinksCount : function () {
+        getLinksCount: function () {
             return links.length;
         },
 
@@ -1376,7 +1425,7 @@ Viva.Graph.graph = function () {
          * @return Array of links from and to requested node if such node exists;
          *   otherwise null is returned.
          */
-        getLinks : function (nodeId) {
+        getLinks: function (nodeId) {
             var node = this.getNode(nodeId);
             return node ? node.links : null;
         },
@@ -1387,7 +1436,7 @@ Viva.Graph.graph = function () {
          * @param {Function(node)} callback Function to be invoked. The function
          *   is passed one argument: visited node.
          */
-        forEachNode : function (callback) {
+        forEachNode: function (callback) {
             if (typeof callback !== 'function') {
                 return;
             }
@@ -1413,7 +1462,7 @@ Viva.Graph.graph = function () {
          *   The function is passed two parameters: adjacent node and link object itself.
          * @param oriented if true graph treated as oriented.
          */
-        forEachLinkedNode : function (nodeId, callback, oriented) {
+        forEachLinkedNode: function (nodeId, callback, oriented) {
             var node = this.getNode(nodeId),
                 i,
                 link,
@@ -1450,7 +1499,7 @@ Viva.Graph.graph = function () {
          *  toId - node id where link ends,
          *  data - additional data passed to graph.addLink() method.
          */
-        forEachLink : function (callback) {
+        forEachLink: function (callback) {
             var i;
             if (typeof callback === 'function') {
                 for (i = 0; i < links.length; ++i) {
@@ -1463,7 +1512,7 @@ Viva.Graph.graph = function () {
          * Suspend all notifications about graph changes until
          * endUpdate is called.
          */
-        beginUpdate : function () {
+        beginUpdate: function () {
             enterModification();
         },
 
@@ -1471,17 +1520,19 @@ Viva.Graph.graph = function () {
          * Resumes all notifications about graph changes and fires
          * graph 'changed' event in case there are any pending changes.
          */
-        endUpdate : function () {
+        endUpdate: function () {
             exitModification(this);
         },
 
         /**
          * Removes all nodes and links from the graph.
          */
-        clear : function () {
+        clear: function () {
             var that = this;
             that.beginUpdate();
-            that.forEachNode(function (node) { that.removeNode(node.id); });
+            that.forEachNode(function (node) {
+                that.removeNode(node.id);
+            });
             that.endUpdate();
         },
 
@@ -1491,7 +1542,7 @@ Viva.Graph.graph = function () {
          *
          * @returns link if there is one. null otherwise.
          */
-        hasLink : function (fromNodeId, toNodeId) {
+        hasLink: function (fromNodeId, toNodeId) {
             // TODO: Use adjacency matrix to speed up this operation.
             var node = this.getNode(fromNodeId),
                 i;
@@ -1514,7 +1565,8 @@ Viva.Graph.graph = function () {
     Viva.Graph.Utils.events(graphPart).extend();
 
     return graphPart;
-};/**
+};
+/**
  * @fileOverview Contains collection of primitve operations under graph.
  *
  * @author Andrei Kashcha (aka anvaka) / http://anvaka.blogspot.com
@@ -1532,7 +1584,7 @@ Viva.Graph.operations = function () {
          * 
          * @returns density of the graph if graph has nodes. NaN otherwise 
          */
-        density : function (graph) {
+        density: function (graph) {
             var nodes = graph.getNodesCount();
             if (nodes === 0) {
                 return NaN;
@@ -1550,7 +1602,7 @@ Viva.Graph.Physics.Vector = function (x, y) {
 };
 
 Viva.Graph.Physics.Vector.prototype = {
-    multiply : function (scalar) {
+    multiply: function (scalar) {
         return new Viva.Graph.Physics.Vector(this.x * scalar, this.y * scalar);
     }
 };
@@ -1561,7 +1613,7 @@ Viva.Graph.Physics.Point = function (x, y) {
 };
 
 Viva.Graph.Physics.Point.prototype = {
-    add : function (point) {
+    add: function (point) {
         return new Viva.Graph.Physics.Point(this.x + point.x, this.y + point.y);
     }
 };
@@ -1575,7 +1627,7 @@ Viva.Graph.Physics.Body = function () {
 };
 
 Viva.Graph.Physics.Body.prototype = {
-    loc : function (location) {
+    loc: function (location) {
         if (location) {
             this.location.x = location.x;
             this.location.y = location.y;
@@ -1585,7 +1637,7 @@ Viva.Graph.Physics.Body.prototype = {
 
         return this.location;
     },
-    vel : function (velocity) {
+    vel: function (velocity) {
         if (velocity) {
             this.velocity.x = velocity.x;
             this.velocity.y = velocity.y;
@@ -1630,7 +1682,7 @@ Viva.Graph.Physics.eulerIntegrator = function () {
          *
          * @returns squared distance of total position updates.
          */
-        integrate : function (simulator, timeStep) {
+        integrate: function (simulator, timeStep) {
             var speedLimit = simulator.speedLimit,
                 tx = 0,
                 ty = 0,
@@ -1671,8 +1723,8 @@ Viva.Graph.Physics.eulerIntegrator = function () {
  */
 Viva.Graph.Physics.nbodyForce = function (options) {
     options = Viva.lazyExtend(options || {
-        gravity : -1,
-        theta : 0.8
+        gravity: -1,
+        theta: 0.8
     });
 
     // the following structures are here to reduce memory pressure
@@ -1682,13 +1734,13 @@ Viva.Graph.Physics.nbodyForce = function (options) {
         this.body = body;
     }
 
-    function InsertStack () {
+    function InsertStack() {
         this.stack = [];
         this.popIdx = 0;
     }
 
     InsertStack.prototype = {
-        isEmpty: function() {
+        isEmpty: function () {
             return this.popIdx === 0;
         },
         push: function (node, body) {
@@ -1791,13 +1843,13 @@ Viva.Graph.Physics.nbodyForce = function (options) {
                         top = node.top,
                         bottom = (node.bottom + top) / 2;
 
-                    if (x > right) {// somewhere in the eastern part.
+                    if (x > right) { // somewhere in the eastern part.
                         quadIdx = quadIdx + 1;
                         var oldLeft = left;
                         left = right;
                         right = right + (right - oldLeft);
                     }
-                    if (y > bottom) {// and in south.
+                    if (y > bottom) { // and in south.
                         quadIdx = quadIdx + 2;
                         var oldTop = top;
                         top = bottom;
@@ -1841,7 +1893,7 @@ Viva.Graph.Physics.nbodyForce = function (options) {
                             newY = oldBody.location.y + dy;
                             // Make sure we don't bump it out of the box. If we do, next iteration should fix it
                         } while (newX < node.left || newX > node.right ||
-                                 newY < node.top  || newY > node.bottom);
+                            newY < node.top || newY > node.bottom);
 
                         oldBody.location.x = newX;
                         oldBody.location.y = newY;
@@ -1926,10 +1978,26 @@ Viva.Graph.Physics.nbodyForce = function (options) {
                         // Otherwise, run the procedure recursively on each of the current node's children.
 
                         // I intentionally unfolded this loop, to save several CPU cycles.
-                        if (node.quads[0]) { queue[pushIdx] = node.quads[0]; queueLength += 1; pushIdx += 1; }
-                        if (node.quads[1]) { queue[pushIdx] = node.quads[1]; queueLength += 1; pushIdx += 1; }
-                        if (node.quads[2]) { queue[pushIdx] = node.quads[2]; queueLength += 1; pushIdx += 1; }
-                        if (node.quads[3]) { queue[pushIdx] = node.quads[3]; queueLength += 1; pushIdx += 1; }
+                        if (node.quads[0]) {
+                            queue[pushIdx] = node.quads[0];
+                            queueLength += 1;
+                            pushIdx += 1;
+                        }
+                        if (node.quads[1]) {
+                            queue[pushIdx] = node.quads[1];
+                            queueLength += 1;
+                            pushIdx += 1;
+                        }
+                        if (node.quads[2]) {
+                            queue[pushIdx] = node.quads[2];
+                            queueLength += 1;
+                            pushIdx += 1;
+                        }
+                        if (node.quads[3]) {
+                            queue[pushIdx] = node.quads[3];
+                            queueLength += 1;
+                            pushIdx += 1;
+                        }
                     }
                 }
             }
@@ -1949,16 +2017,28 @@ Viva.Graph.Physics.nbodyForce = function (options) {
             while (i--) {
                 var x = bodies[i].location.x;
                 var y = bodies[i].location.y;
-                if (x < x1) { x1 = x; }
-                if (x > x2) { x2 = x; }
-                if (y < y1) { y1 = y; }
-                if (y > y2) { y2 = y; }
+                if (x < x1) {
+                    x1 = x;
+                }
+                if (x > x2) {
+                    x2 = x;
+                }
+                if (y < y1) {
+                    y1 = y;
+                }
+                if (y > y2) {
+                    y2 = y;
+                }
             }
 
             // Squarify the bounds.
             var dx = x2 - x1,
                 dy = y2 - y1;
-            if (dx > dy) { y2 = y1 + dx; } else { x2 = x1 + dy; }
+            if (dx > dy) {
+                y2 = y1 + dx;
+            } else {
+                x2 = x1 + dy;
+            }
 
             currentInCache = 0;
             root = newNode();
@@ -1974,38 +2054,48 @@ Viva.Graph.Physics.nbodyForce = function (options) {
         };
 
     return {
-        insert : insert,
-        init : init,
-        update : update,
-        options : function (newOptions) {
+        insert: insert,
+        init: init,
+        update: update,
+        options: function (newOptions) {
             if (newOptions) {
-                if (typeof newOptions.gravity === 'number') { gravity = newOptions.gravity; }
-                if (typeof newOptions.theta === 'number') { theta = newOptions.theta; }
+                if (typeof newOptions.gravity === 'number') {
+                    gravity = newOptions.gravity;
+                }
+                if (typeof newOptions.theta === 'number') {
+                    theta = newOptions.theta;
+                }
 
                 return this;
             }
 
-            return {gravity : gravity, theta : theta};
+            return {
+                gravity: gravity,
+                theta: theta
+            };
         }
     };
-};Viva.Graph.Physics.dragForce = function (options) {
+};
+Viva.Graph.Physics.dragForce = function (options) {
     if (!options) {
         options = {};
     }
 
     var currentOptions = {
-        coeff : options.coeff || 0.01
+        coeff: options.coeff || 0.01
     };
 
     return {
-        init : function (forceSimulator) {},
-        update : function (body) {
+        init: function (forceSimulator) {},
+        update: function (body) {
             body.force.x -= currentOptions.coeff * body.velocity.x;
             body.force.y -= currentOptions.coeff * body.velocity.y;
         },
-        options : function (newOptions) {
+        options: function (newOptions) {
             if (newOptions) {
-                if (typeof newOptions.coeff === 'number') { currentOptions.coeff = newOptions.coeff; }
+                if (typeof newOptions.coeff === 'number') {
+                    currentOptions.coeff = newOptions.coeff;
+                }
 
                 return this;
             }
@@ -2016,16 +2106,16 @@ Viva.Graph.Physics.nbodyForce = function (options) {
 };
 Viva.Graph.Physics.springForce = function (currentOptions) {
     currentOptions = Viva.lazyExtend(currentOptions, {
-        length : 50,
-        coeff : 0.00022
+        length: 50,
+        coeff: 0.00022
     });
 
     var random = Viva.random('Random number 4.', 'Chosen by fair dice roll');
 
     return {
-        init : function (forceSimulator) {},
+        init: function (forceSimulator) {},
 
-        update : function (spring) {
+        update: function (spring) {
             var body1 = spring.body1,
                 body2 = spring.body2,
                 length = spring.length < 0 ? currentOptions.length : spring.length,
@@ -2049,10 +2139,14 @@ Viva.Graph.Physics.springForce = function (currentOptions) {
             body2.force.y += -coeff * dy;
         },
 
-        options : function (newOptions) {
+        options: function (newOptions) {
             if (newOptions) {
-                if (typeof newOptions.length === 'number') { currentOptions.length = newOptions.length; }
-                if (typeof newOptions.coeff === 'number') { currentOptions.coeff = newOptions.coeff; }
+                if (typeof newOptions.length === 'number') {
+                    currentOptions.length = newOptions.length;
+                }
+                if (typeof newOptions.coeff === 'number') {
+                    currentOptions.coeff = newOptions.coeff;
+                }
 
                 return this;
             }
@@ -2082,17 +2176,17 @@ Viva.Graph.Physics.forceSimulator = function (forceIntegrator) {
         /**
          * The speed limit allowed by this simulator.
          */
-        speedLimit : 1.0,
+        speedLimit: 1.0,
 
         /**
          * Bodies in this simulation
          */
-        bodies : bodies,
+        bodies: bodies,
 
         /**
          * Accumulates all forces acting on the bodies and springs.
          */
-        accumulate : function () {
+        accumulate: function () {
             var i, j, body;
 
             // Reinitialize all forces
@@ -2129,7 +2223,7 @@ Viva.Graph.Physics.forceSimulator = function (forceIntegrator) {
         /**
          * Runs simulation for one time step.
          */
-        run : function (timeStep) {
+        run: function (timeStep) {
             this.accumulate();
             return integrator.integrate(this, timeStep);
         },
@@ -2142,10 +2236,10 @@ Viva.Graph.Physics.forceSimulator = function (forceIntegrator) {
          *   the method does not check all this properties, for the sake of performance.
          *   // TODO: maybe it should check it?
          */
-        addBody : function (body) {
+        addBody: function (body) {
             if (!body) {
                 throw {
-                    message : 'Cannot add null body to force simulator'
+                    message: 'Cannot add null body to force simulator'
                 };
             }
 
@@ -2154,11 +2248,15 @@ Viva.Graph.Physics.forceSimulator = function (forceIntegrator) {
             return body;
         },
 
-        removeBody : function (body) {
-            if (!body) { return false; }
+        removeBody: function (body) {
+            if (!body) {
+                return false;
+            }
 
             var idx = Viva.Graph.Utils.indexOfElementInArray(body, bodies);
-            if (idx < 0) { return false; }
+            if (idx < 0) {
+                return false;
+            }
 
             return bodies.splice(idx, 1);
         },
@@ -2169,13 +2267,13 @@ Viva.Graph.Physics.forceSimulator = function (forceIntegrator) {
         addSpring: function (body1, body2, springLength, springCoefficient, springWeight) {
             if (!body1 || !body2) {
                 throw {
-                    message : 'Cannot add null spring to force simulator'
+                    message: 'Cannot add null spring to force simulator'
                 };
             }
 
             if (typeof springLength !== 'number') {
                 throw {
-                    message : 'Spring length should be a number'
+                    message: 'Spring length should be a number'
                 };
             }
             springWeight = typeof springWeight === 'number' ? springWeight : 1;
@@ -2187,11 +2285,15 @@ Viva.Graph.Physics.forceSimulator = function (forceIntegrator) {
             return spring;
         },
 
-        removeSpring : function (spring) {
-            if (!spring) { return false; }
+        removeSpring: function (spring) {
+            if (!spring) {
+                return false;
+            }
 
             var idx = Viva.Graph.Utils.indexOfElementInArray(spring, springs);
-            if (idx < 0) { return false; }
+            if (idx < 0) {
+                return false;
+            }
 
             return springs.splice(idx, 1);
         },
@@ -2202,7 +2304,7 @@ Viva.Graph.Physics.forceSimulator = function (forceIntegrator) {
         addBodyForce: function (force) {
             if (!force) {
                 throw {
-                    message : 'Cannot add mighty (unknown) force to the simulator'
+                    message: 'Cannot add mighty (unknown) force to the simulator'
                 };
             }
 
@@ -2212,22 +2314,22 @@ Viva.Graph.Physics.forceSimulator = function (forceIntegrator) {
         /**
          * Adds a spring force acting on all springs in this simulation.
          */
-        addSpringForce : function (force) {
+        addSpringForce: function (force) {
             if (!force) {
                 throw {
-                    message : 'Cannot add unknown force to the simulator'
+                    message: 'Cannot add unknown force to the simulator'
                 };
             }
 
             springForces.push(force);
         }
     };
-};// I don't like to suppress this, but I'm afraid 'force_directed_body'
+}; // I don't like to suppress this, but I'm afraid 'force_directed_body'
 // could already be used by someone. Don't want to break it now.
 /* jshint camelcase:false */
 
 Viva.Graph.Layout = Viva.Graph.Layout || {};
-Viva.Graph.Layout.forceDirected = function(graph, settings) {
+Viva.Graph.Layout.forceDirected = function (graph, settings) {
     var STABLE_THRESHOLD = 0.001; // Maximum movement of the system which can be considered as stabilized
 
     if (!graph) {
@@ -2283,7 +2385,7 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
         graphRect = new Viva.Graph.Rect(),
         random = Viva.random('ted.com', 103, 114, 101, 97, 116),
 
-        getBestNodePosition = function(node) {
+        getBestNodePosition = function (node) {
             // TODO: Initial position could be picked better, e.g. take into
             // account all neighbouring nodes/links, not only one.
             // TODO: this is the same as in gem layout. consider refactoring.
@@ -2306,12 +2408,12 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
             };
         },
 
-        updateNodeMass = function(node) {
+        updateNodeMass = function (node) {
             var body = node.force_directed_body;
             body.mass = 1 + graph.getLinks(node.id).length / 3.0;
         },
 
-        initNode = function(node) {
+        initNode = function (node) {
             var body = node.force_directed_body;
             if (!body) {
                 // TODO: rename position to location or location to position to be consistent with
@@ -2327,7 +2429,7 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
             }
         },
 
-        releaseNode = function(node) {
+        releaseNode = function (node) {
             var body = node.force_directed_body;
             if (body) {
                 node.force_directed_body = null;
@@ -2337,7 +2439,7 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
             }
         },
 
-        initLink = function(link) {
+        initLink = function (link) {
             // TODO: what if bodies are not initialized?
             var from = graph.getNode(link.fromId),
                 to = graph.getNode(link.toId);
@@ -2347,7 +2449,7 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
             link.force_directed_spring = forceSimulator.addSpring(from.force_directed_body, to.force_directed_body, -1.0, link.weight);
         },
 
-        releaseLink = function(link) {
+        releaseLink = function (link) {
             var spring = link.force_directed_spring;
             if (spring) {
                 var from = graph.getNode(link.fromId),
@@ -2366,7 +2468,7 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
             }
         },
 
-        onGraphChanged = function(changes) {
+        onGraphChanged = function (changes) {
             for (var i = 0; i < changes.length; ++i) {
                 var change = changes[i];
                 if (change.changeType === 'add') {
@@ -2388,13 +2490,13 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
             }
         },
 
-        initSimulator = function() {
+        initSimulator = function () {
             graph.forEachNode(initNode);
             graph.forEachLink(initLink);
             graph.addEventListener('changed', onGraphChanged);
         },
 
-        isNodePinned = function(node) {
+        isNodePinned = function (node) {
             if (!node) {
                 return true;
             }
@@ -2402,7 +2504,7 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
             return node.isPinned || (node.data && node.data.isPinned);
         },
 
-        updateNodePositions = function() {
+        updateNodePositions = function () {
             var x1 = Number.MAX_VALUE,
                 y1 = Number.MAX_VALUE,
                 x2 = Number.MIN_VALUE,
@@ -2411,7 +2513,7 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
                 return;
             }
 
-            graph.forEachNode(function(node) {
+            graph.forEachNode(function (node) {
                 var body = node.force_directed_body;
                 if (!body) {
                     // This could be a sign someone removed the propery.
@@ -2471,7 +2573,7 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
          *
          * @param {integer} [iterationsCount] number of algorithm's iterations.
          */
-        run: function(iterationsCount) {
+        run: function (iterationsCount) {
             var i;
             iterationsCount = iterationsCount || 50;
 
@@ -2480,7 +2582,7 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
             }
         },
 
-        step: function() {
+        step: function () {
             var energy = forceSimulator.run(20);
             updateNodePositions();
 
@@ -2491,14 +2593,14 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
          * Returns rectangle structure {x1, y1, x2, y2}, which represents
          * current space occupied by graph.
          */
-        getGraphRect: function() {
+        getGraphRect: function () {
             return graphRect;
         },
 
         /**
          * Request to release all resources
          */
-        dispose: function() {
+        dispose: function () {
             graph.removeEventListener('change', onGraphChanged);
         },
 
@@ -2509,7 +2611,7 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
          * @param length new desired length of the springs (aka edge, aka link).
          * if this parameter is empty then old spring length is returned.
          */
-        springLength: function(length) {
+        springLength: function (length) {
             if (arguments.length === 1) {
                 springForce.options({
                     length: length
@@ -2526,7 +2628,7 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
          * @param coeff new spring coeffiсient.
          * if this parameter is empty then its old value returned.
          */
-        springCoeff: function(coeff) {
+        springCoeff: function (coeff) {
             if (arguments.length === 1) {
                 springForce.options({
                     coeff: coeff
@@ -2543,7 +2645,7 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
          * @param g new gravity constant.
          * if this parameter is empty then its old value returned.
          */
-        gravity: function(g) {
+        gravity: function (g) {
             if (arguments.length === 1) {
                 nbodyForce.options({
                     gravity: g
@@ -2560,7 +2662,7 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
          * @param t new theta coeffiсient.
          * if this parameter is empty then its old value returned.
          */
-        theta: function(t) {
+        theta: function (t) {
             if (arguments.length === 1) {
                 nbodyForce.options({
                     theta: t
@@ -2577,7 +2679,7 @@ Viva.Graph.Layout.forceDirected = function(graph, settings) {
          * @param dragCoeff new drag coeffiсient.
          * if this parameter is empty then its old value returned.
          */
-        drag: function(dragCoeff) {
+        drag: function (dragCoeff) {
             if (arguments.length === 1) {
                 dragForce.options({
                     coeff: dragCoeff
@@ -2601,9 +2703,9 @@ Viva.Graph.Layout = Viva.Graph.Layout || {};
  */
 Viva.Graph.Layout.constant = function (graph, userSettings) {
     userSettings = Viva.lazyExtend(userSettings, {
-        maxX : 1024,
-        maxY : 1024,
-        seed : 'Deterministic randomness made me do this'
+        maxX: 1024,
+        maxY: 1024,
+        seed: 'Deterministic randomness made me do this'
     });
     // This class simply follows API, it does not use some of the arguments:
     /*jshint unused: false */
@@ -2615,10 +2717,18 @@ Viva.Graph.Layout.constant = function (graph, userSettings) {
         },
 
         updateGraphRect = function (node, graphRect) {
-            if (node.position.x < graphRect.x1) { graphRect.x1 = node.position.x; }
-            if (node.position.x > graphRect.x2) { graphRect.x2 = node.position.x; }
-            if (node.position.y < graphRect.y1) { graphRect.y1 = node.position.y; }
-            if (node.position.y > graphRect.y2) { graphRect.y2 = node.position.y; }
+            if (node.position.x < graphRect.x1) {
+                graphRect.x1 = node.position.x;
+            }
+            if (node.position.x > graphRect.x2) {
+                graphRect.x2 = node.position.x;
+            }
+            if (node.position.y < graphRect.y1) {
+                graphRect.y1 = node.position.y;
+            }
+            if (node.position.y > graphRect.y2) {
+                graphRect.y2 = node.position.y;
+            }
         },
 
         ensureNodeInitialized = function (node) {
@@ -2629,7 +2739,9 @@ Viva.Graph.Layout.constant = function (graph, userSettings) {
         },
 
         updateNodePositions = function () {
-            if (graph.getNodesCount() === 0) { return; }
+            if (graph.getNodesCount() === 0) {
+                return;
+            }
 
             graphRect.x1 = Number.MAX_VALUE;
             graphRect.y1 = Number.MAX_VALUE;
@@ -2639,7 +2751,7 @@ Viva.Graph.Layout.constant = function (graph, userSettings) {
             graph.forEachNode(ensureNodeInitialized);
         },
 
-        onGraphChanged = function(changes) {
+        onGraphChanged = function (changes) {
             for (var i = 0; i < changes.length; ++i) {
                 var change = changes[i];
                 if (change.changeType === 'add' && change.node) {
@@ -2660,14 +2772,14 @@ Viva.Graph.Layout.constant = function (graph, userSettings) {
          * @param {integer} [iterationsCount] number of algorithm's iterations.
          *  The constant layout ignores this parameter.
          */
-        run : function (iterationsCount) {
+        run: function (iterationsCount) {
             this.step();
         },
 
         /**
          * One step of layout algorithm.
          */
-        step : function () {
+        step: function () {
             updateNodePositions();
 
             return false; // no need to continue.
@@ -2677,14 +2789,14 @@ Viva.Graph.Layout.constant = function (graph, userSettings) {
          * Returns rectangle structure {x1, y1, x2, y2}, which represents
          * current space occupied by graph.
          */
-        getGraphRect : function () {
+        getGraphRect: function () {
             return graphRect;
         },
 
         /**
          * Request to release all resources
          */
-        dispose : function () {
+        dispose: function () {
             graph.removeEventListener('change', onGraphChanged);
         },
 
@@ -2703,7 +2815,7 @@ Viva.Graph.Layout.constant = function (graph, userSettings) {
          * Otherwise if it's not a function the argument is treated as graph node
          * and current node placement callback will be used to place it.
          */
-        placeNode : function (newPlaceNodeCallbackOrNode) {
+        placeNode: function (newPlaceNodeCallbackOrNode) {
             if (typeof newPlaceNodeCallbackOrNode === 'function') {
                 placeNodeCallback = newPlaceNodeCallbackOrNode;
                 updateNodePositions();
@@ -2780,20 +2892,22 @@ Viva.Graph.View.renderer = function (graph, settings) {
         userInteraction = false,
 
         viewPortOffset = {
-            x : 0,
-            y : 0
+            x: 0,
+            y: 0
         },
 
         transform = {
-            offsetX : 0,
-            offsetY : 0,
-            scale : 1
+            offsetX: 0,
+            offsetY: 0,
+            scale: 1
         };
 
     var prepareSettings = function () {
             container = container || window.document.body;
             layout = layout || Viva.Graph.Layout.forceDirected(graph);
-            graphics = graphics || Viva.Graph.View.svgGraphics(graph, {container : container});
+            graphics = graphics || Viva.Graph.View.svgGraphics(graph, {
+                container: container
+            });
 
             if (!settings.hasOwnProperty('renderLinks')) {
                 settings.renderLinks = true;
@@ -2803,9 +2917,20 @@ Viva.Graph.View.renderer = function (graph, settings) {
             inputManager = (graphics.inputManager || Viva.Input.domInputManager)(graph, graphics);
         },
         // Cache positions object to prevent GC pressure
-        cachedFromPos = {x : 0, y : 0, node: null},
-        cachedToPos = {x : 0, y : 0, node: null},
-        cachedNodePos = { x: 0, y: 0},
+        cachedFromPos = {
+            x: 0,
+            y: 0,
+            node: null
+        },
+        cachedToPos = {
+            x: 0,
+            y: 0,
+            node: null
+        },
+        cachedNodePos = {
+            x: 0,
+            y: 0
+        },
         windowEvents = Viva.Graph.Utils.events(window),
         publicEvents = Viva.Graph.Utils.events({}).extend(),
         graphEvents,
@@ -2942,20 +3067,20 @@ Viva.Graph.View.renderer = function (graph, settings) {
 
             // TODO: This may not be memory efficient. Consider reusing handlers object.
             inputManager.bindDragNDrop(node, {
-                onStart : function () {
+                onStart: function () {
                     wasPinned = node.isPinned;
                     node.isPinned = true;
                     userInteraction = true;
                     resetStable();
                 },
-                onDrag : function (e, offset) {
+                onDrag: function (e, offset) {
                     node.position.x += offset.x / transform.scale;
                     node.position.y += offset.y / transform.scale;
                     userInteraction = true;
 
                     renderGraph();
                 },
-                onStop : function () {
+                onStop: function () {
                     node.isPinned = wasPinned;
                     userInteraction = false;
                 }
@@ -3007,9 +3132,13 @@ Viva.Graph.View.renderer = function (graph, settings) {
         processLinkChange = function (change) {
             var link = change.link;
             if (change.changeType === 'add') {
-                if (settings.renderLinks) { createLinkUi(link); }
+                if (settings.renderLinks) {
+                    createLinkUi(link);
+                }
             } else if (change.changeType === 'remove') {
-                if (settings.renderLinks) { removeLinkUi(link); }
+                if (settings.renderLinks) {
+                    removeLinkUi(link);
+                }
             } else if (change.changeType === 'update') {
                 throw 'Update type is not implemented. TODO: Implement me!';
             }
@@ -3086,7 +3215,9 @@ Viva.Graph.View.renderer = function (graph, settings) {
             animationTimer.stop();
 
             graph.forEachLink(function (link) {
-                if (settings.renderLinks) { removeLinkUi(link); }
+                if (settings.renderLinks) {
+                    removeLinkUi(link);
+                }
             });
 
             graph.forEachNode(function (node) {
@@ -3108,7 +3239,7 @@ Viva.Graph.View.renderer = function (graph, settings) {
          * Note: if rendering stopped by used started dragging nodes or new nodes were added to the
          * graph renderer will give run more iterations to reflect changes.
          */
-        run : function (iterationsCount) {
+        run: function (iterationsCount) {
 
             if (!rendererInitialized) {
                 prepareSettings();
@@ -3126,21 +3257,21 @@ Viva.Graph.View.renderer = function (graph, settings) {
             return this;
         },
 
-        reset : function () {
+        reset: function () {
             graphics.resetScale();
             updateCenter();
             transform.scale = 1;
         },
 
-        pause : function () {
+        pause: function () {
             animationTimer.stop();
         },
 
-        resume : function () {
+        resume: function () {
             animationTimer.restart();
         },
 
-        rerender : function () {
+        rerender: function () {
             renderGraph();
             return this;
         },
@@ -3148,16 +3279,16 @@ Viva.Graph.View.renderer = function (graph, settings) {
         /**
          * Removes this renderer and deallocates all resources/timers
          */
-        dispose : function () {
+        dispose: function () {
             stopListenToEvents(); // I quit!
         },
 
-        on : function (eventName, callback) {
+        on: function (eventName, callback) {
             publicEvents.addEventListener(eventName, callback);
             return this;
         },
 
-        off : function (eventName, callback) {
+        off: function (eventName, callback) {
             publicEvents.removeEventListener(eventName, callback);
             return this;
         }
@@ -3171,14 +3302,17 @@ Viva.Graph.serializer = function () {
         },
 
         nodeTransformStore = function (node) {
-            return { id : node.id, data: node.data };
+            return {
+                id: node.id,
+                data: node.data
+            };
         },
 
         linkTransformStore = function (link) {
             return {
-                fromId : link.fromId,
+                fromId: link.fromId,
                 toId: link.toId,
-                data : link.data
+                data: link.data
             };
         },
 
@@ -3201,20 +3335,26 @@ Viva.Graph.serializer = function () {
          * @param nodeTransform optional callback function(node) which returns what should be passed into nodes collection
          * @param linkTransform optional callback functions(link) which returns what should be passed into the links collection
          */
-        storeToJSON : function (graph, nodeTransform, linkTransform) {
-            if (!graph) { throw 'Graph is not defined'; }
+        storeToJSON: function (graph, nodeTransform, linkTransform) {
+            if (!graph) {
+                throw 'Graph is not defined';
+            }
             checkJSON();
 
             nodeTransform = nodeTransform || nodeTransformStore;
             linkTransform = linkTransform || linkTransformStore;
 
             var store = {
-                nodes : [],
-                links : []
+                nodes: [],
+                links: []
             };
 
-            graph.forEachNode(function (node) { store.nodes.push(nodeTransform(node)); });
-            graph.forEachLink(function (link) { store.links.push(linkTransform(link)); });
+            graph.forEachNode(function (node) {
+                store.nodes.push(nodeTransform(node));
+            });
+            graph.forEachLink(function (link) {
+                store.links.push(linkTransform(link));
+            });
 
             return JSON.stringify(store);
         },
@@ -3231,8 +3371,10 @@ Viva.Graph.serializer = function () {
          * @param linkTransform optional callback functions(link) which accepts deserialized link and returns link object with
          *        'fromId', 'toId' and 'data' properties.
          */
-        loadFromJSON : function (jsonString, nodeTransform, linkTransform) {
-            if (typeof jsonString !== 'string') { throw 'String expected in loadFromJSON() method'; }
+        loadFromJSON: function (jsonString, nodeTransform, linkTransform) {
+            if (typeof jsonString !== 'string') {
+                throw 'String expected in loadFromJSON() method';
+            }
             checkJSON();
 
             nodeTransform = nodeTransform || nodeTransformLoad;
@@ -3242,18 +3384,24 @@ Viva.Graph.serializer = function () {
                 graph = Viva.Graph.graph(),
                 i;
 
-            if (!store || !store.nodes || !store.links) { throw 'Passed json string does not represent valid graph'; }
+            if (!store || !store.nodes || !store.links) {
+                throw 'Passed json string does not represent valid graph';
+            }
 
             for (i = 0; i < store.nodes.length; ++i) {
                 var parsedNode = nodeTransform(store.nodes[i]);
-                if (!parsedNode.hasOwnProperty('id')) { throw 'Graph node format is invalid. Node.id is missing'; }
+                if (!parsedNode.hasOwnProperty('id')) {
+                    throw 'Graph node format is invalid. Node.id is missing';
+                }
 
                 graph.addNode(parsedNode.id, parsedNode.data);
             }
 
             for (i = 0; i < store.links.length; ++i) {
                 var link = linkTransform(store.links[i]);
-                if (!link.hasOwnProperty('fromId') || !link.hasOwnProperty('toId')) { throw 'Graph link format is invalid. Both fromId and toId are required'; }
+                if (!link.hasOwnProperty('fromId') || !link.hasOwnProperty('toId')) {
+                    throw 'Graph link format is invalid. Both fromId and toId are required';
+                }
 
                 graph.addLink(link.fromId, link.toId, link.data);
             }
@@ -3313,9 +3461,9 @@ Viva.Graph.centrality = function () {
             }
 
             return {
-                S : S,
-                P : P,
-                sigma : sigma
+                S: S,
+                P: P,
+                sigma: sigma
             };
         },
 
@@ -3354,11 +3502,16 @@ Viva.Graph.centrality = function () {
                 key;
             for (key in b) {
                 if (b.hasOwnProperty(key)) {
-                    sorted.push({ key : key, value : b[key]});
+                    sorted.push({
+                        key: key,
+                        value: b[key]
+                    });
                 }
             }
 
-            return sorted.sort(function (x, y) { return y.value - x.value; });
+            return sorted.sort(function (x, y) {
+                return y.value - x.value;
+            });
         };
 
     return {
@@ -3386,7 +3539,7 @@ Viva.Graph.centrality = function () {
          * 
          * @param graph for which we are calculating betweenness centrality. Non-weighted graphs are only supported 
          */
-        betweennessCentrality : function (graph) {
+        betweennessCentrality: function (graph) {
             var betweennes = {},
                 shortestPath;
             graph.forEachNode(function (node) {
@@ -3412,7 +3565,7 @@ Viva.Graph.centrality = function () {
          *   'out' - calculate out-degree centrality
          *         - if it's not set generic degree centrality is calculated
          */
-        degreeCentrality : function (graph, kind) {
+        degreeCentrality: function (graph, kind) {
             var calcDegFunction,
                 sortedDegrees = [],
                 result = [],
@@ -3462,7 +3615,10 @@ Viva.Graph.centrality = function () {
                         j;
                     if (nodes) {
                         for (j = 0; j < nodes.length; ++j) {
-                            result.unshift({key : nodes[j], value : parseInt(degree, 10)});
+                            result.unshift({
+                                key: nodes[j],
+                                value: parseInt(degree, 10)
+                            });
                         }
                     }
                 }
@@ -3471,7 +3627,8 @@ Viva.Graph.centrality = function () {
             return result;
         }
     };
-};/**
+};
+/**
  * @fileOverview Community structure detection algorithms
  * 
  * @see http://en.wikipedia.org/wiki/Community_structure
@@ -3488,12 +3645,13 @@ Viva.Graph.community = function () {
          * @see http://arxiv.org/pdf/1109.5720v3.pdf
          * @see https://sites.google.com/site/communitydetectionslpa/ 
          */
-        slpa : function (graph, T, r) {
+        slpa: function (graph, T, r) {
             var algorithm = Viva.Graph._community.slpaAlgorithm(graph, T, r);
             return algorithm.run();
         }
     };
-};Viva.Graph._community = {};
+};
+Viva.Graph._community = {};
 
 /**
  * Implementation of Speaker-listener Label Propagation Algorithm (SLPA) of
@@ -3513,7 +3671,10 @@ Viva.Graph._community.slpaAlgorithm = function (graph, T, r) {
             var communities = [];
             nodeMemory.forEachUniqueWord(function (word, count) {
                 if (count > threshold) {
-                    communities.push({name : word, probability : count / T });
+                    communities.push({
+                        name: word,
+                        probability: count / T
+                    });
                 } else {
                     return true; // stop enumeration, nothing more popular after this word.
                 }
@@ -3528,7 +3689,9 @@ Viva.Graph._community.slpaAlgorithm = function (graph, T, r) {
                 var memory = Viva.Graph._community.occuranceMap(random);
                 memory.add(node.id);
 
-                node.slpa = { memory : memory  };
+                node.slpa = {
+                    memory: memory
+                };
                 algoNodes.push(node.id);
             });
 
@@ -3539,9 +3702,9 @@ Viva.Graph._community.slpaAlgorithm = function (graph, T, r) {
             var shuffle = Viva.randomIterator(nodes, shuffleRandom),
                 t,
 
-               /**
-                * One iteration of SLPA.
-                */
+                /**
+                 * One iteration of SLPA.
+                 */
                 processNode = function (nodeId) {
                     var listner = graph.getNode(nodeId),
                         saidWords = Viva.Graph._community.occuranceMap(random);
@@ -3611,7 +3774,7 @@ Viva.Graph._community.slpaAlgorithm = function (graph, T, r) {
          * Runtime is O(T * m), where m is total number of edges, and T - number of algorithm iterations.
          *
          */
-        run : function () {
+        run: function () {
             var nodes = init(graph);
 
             evaluate(graph, nodes);
@@ -3659,8 +3822,12 @@ Viva.Graph._community.occuranceMap = function (random) {
                 // for ... in implementation in different browsers results in different
                 // order, and if we want to have same categories accross all browsers
                 // we should order words by key names too:
-                if (x < y) { return -1; }
-                if (x > y) { return 1; }
+                if (x < y) {
+                    return -1;
+                }
+                if (x > y) {
+                    return 1;
+                }
 
                 return 0;
             });
@@ -3678,7 +3845,7 @@ Viva.Graph._community.occuranceMap = function (random) {
         /**
          * Adds a new word to the collection of words.
          */
-        add : function (word) {
+        add: function (word) {
             word = String(word);
             if (wordsCount.hasOwnProperty(word)) {
                 wordsCount[word] += 1;
@@ -3694,7 +3861,7 @@ Viva.Graph._community.occuranceMap = function (random) {
          * Gets number of occurances for a given word. If word is not present in the dictionary
          * zero is returned.
          */
-        getWordCount : function (word) {
+        getWordCount: function (word) {
             return wordsCount[word] || 0;
         },
 
@@ -3703,7 +3870,7 @@ Viva.Graph._community.occuranceMap = function (random) {
          * random word among them is choosen.
          *
          */
-        getMostPopularFair : function () {
+        getMostPopularFair: function () {
             if (allWords.length === 1) {
                 return allWords[0]; // optimizes speed for simple case.
             }
@@ -3721,7 +3888,7 @@ Viva.Graph._community.occuranceMap = function (random) {
                 }
             }
 
-            maxCount += 1;  // to include upper bound. i.e. random words between [0, maxCount] (not [0, maxCount) ).
+            maxCount += 1; // to include upper bound. i.e. random words between [0, maxCount] (not [0, maxCount) ).
             return uniqueWords[random.next(maxCount)];
         },
 
@@ -3729,7 +3896,7 @@ Viva.Graph._community.occuranceMap = function (random) {
          * Selects a random word from map with probability proportional
          * to the occurrence frequency of words.
          */
-        getRandomWord : function () {
+        getRandomWord: function () {
             if (allWords.length === 0) {
                 throw 'The occurance map is empty. Cannot get empty word';
             }
@@ -3744,7 +3911,7 @@ Viva.Graph._community.occuranceMap = function (random) {
          *
          * Note: enumeration is guaranteed in to run in decreasing order.
          */
-        forEachUniqueWord : function (callback) {
+        forEachUniqueWord: function (callback) {
             if (typeof callback !== 'function') {
                 throw 'Function callback is expected to enumerate all words';
             }
@@ -3763,7 +3930,8 @@ Viva.Graph._community.occuranceMap = function (random) {
             }
         }
     };
-};/**
+};
+/**
  * @fileOverview Contains collection of graph generators.
  *
  * @author Andrei Kashcha (aka anvaka) / http://anvaka.blogspot.com
@@ -3777,9 +3945,11 @@ Viva.Graph.generator = function () {
          *
          * @param n represents number of nodes in the complete graph.
          */
-        complete : function (n) {
+        complete: function (n) {
             if (!n || n < 1) {
-                throw { message: "At least two nodes expected for complete graph" };
+                throw {
+                    message: "At least two nodes expected for complete graph"
+                };
             }
 
             var g = Viva.Graph.graph(),
@@ -3806,9 +3976,11 @@ Viva.Graph.generator = function () {
          * @param n represents number of nodes in the first graph partition
          * @param m represents number of nodes in the second graph partition
          */
-        completeBipartite : function (n, m) {
+        completeBipartite: function (n, m) {
             if (!n || !m || n < 0 || m < 0) {
-                throw { message: "Graph dimensions are invalid. Number of nodes in each partition should be greate than 0" };
+                throw {
+                    message: "Graph dimensions are invalid. Number of nodes in each partition should be greate than 0"
+                };
             }
 
             var g = Viva.Graph.graph(),
@@ -3829,9 +4001,11 @@ Viva.Graph.generator = function () {
          *
          * @param n number of steps in the ladder.
          */
-        ladder : function (n) {
+        ladder: function (n) {
             if (!n || n < 0) {
-                throw { message: "Invalid number of nodes" };
+                throw {
+                    message: "Invalid number of nodes"
+                };
             }
 
             var g = Viva.Graph.graph(),
@@ -3858,9 +4032,11 @@ Viva.Graph.generator = function () {
          *
          * @param n number of steps in the ladder.
          */
-        circularLadder : function (n) {
+        circularLadder: function (n) {
             if (!n || n < 0) {
-                throw { message: "Invalid number of nodes" };
+                throw {
+                    message: "Invalid number of nodes"
+                };
             }
 
             var g = this.ladder(n);
@@ -3884,8 +4060,12 @@ Viva.Graph.generator = function () {
             for (i = 0; i < n; ++i) {
                 for (j = 0; j < m; ++j) {
                     var node = i + j * n;
-                    if (i > 0) { g.addLink(node, i - 1 + j * n); }
-                    if (j > 0) { g.addLink(node, i + (j - 1) * n); }
+                    if (i > 0) {
+                        g.addLink(node, i - 1 + j * n);
+                    }
+                    if (j > 0) {
+                        g.addLink(node, i + (j - 1) * n);
+                    }
                 }
             }
 
@@ -3894,7 +4074,9 @@ Viva.Graph.generator = function () {
 
         path: function (n) {
             if (!n || n < 0) {
-                throw { message: "Invalid number of nodes" };
+                throw {
+                    message: "Invalid number of nodes"
+                };
             }
 
             var g = Viva.Graph.graph(),
@@ -3911,7 +4093,9 @@ Viva.Graph.generator = function () {
 
         lollipop: function (m, n) {
             if (!n || n < 0 || !m || m < 0) {
-                throw { message: "Invalid number of nodes" };
+                throw {
+                    message: "Invalid number of nodes"
+                };
             }
 
             var g = this.complete(m),
@@ -3950,9 +4134,11 @@ Viva.Graph.generator = function () {
          *
          * @param n number of nodes in the graph.
          */
-        randomNoLinks : function (n) {
+        randomNoLinks: function (n) {
             if (!n || n < 0) {
-                throw { message: "Invalid number of nodes" };
+                throw {
+                    message: "Invalid number of nodes"
+                };
             }
 
             var g = Viva.Graph.graph(),
@@ -3996,28 +4182,28 @@ Viva.Graph.View.cssGraphics = function () {
         scaleY = 1,
 
         transformName = (function () {
-			var browserName = Viva.BrowserInfo.browser,
+            var browserName = Viva.BrowserInfo.browser,
                 prefix,
                 version;
 
             switch (browserName) {
-            case "mozilla":
-                prefix = "Moz";
-                break;
-            case "webkit":
-                prefix = "webkit";
-                break;
-            case "opera":
-                prefix = "O";
-                break;
-            case "msie":
-                version = Viva.BrowserInfo.version.split(".")[0];
-                if (version > 8) {
-                    prefix = "ms";
-                } else {
-                    return OLD_IE;
-                }
-                break;
+                case "mozilla":
+                    prefix = "Moz";
+                    break;
+                case "webkit":
+                    prefix = "webkit";
+                    break;
+                case "opera":
+                    prefix = "O";
+                    break;
+                case "msie":
+                    version = Viva.BrowserInfo.version.split(".")[0];
+                    if (version > 8) {
+                        prefix = "ms";
+                    } else {
+                        return OLD_IE;
+                    }
+                    break;
             }
 
             if (prefix) { // CSS3
@@ -4027,15 +4213,15 @@ Viva.Graph.View.cssGraphics = function () {
             return null;
         }()),
 
-       /**
-        * Returns a function (ui, x, y, angleRad).
-        *
-        * The function attempts to rotate "ui" dom element on "angleRad" radians
-        * and position it to "x" "y" coordinates.
-        *
-        * Operation works in most modern browsers that support transform css style
-        * and IE.
-        * */
+        /**
+         * Returns a function (ui, x, y, angleRad).
+         *
+         * The function attempts to rotate "ui" dom element on "angleRad" radians
+         * and position it to "x" "y" coordinates.
+         *
+         * Operation works in most modern browsers that support transform css style
+         * and IE.
+         * */
         positionLink = (function () {
             if (transformName === OLD_IE) { // This is old IE, use filters
                 return function (ui, x, y, angleRad) {
@@ -4135,7 +4321,7 @@ Viva.Graph.View.cssGraphics = function () {
          * @returns If builderCallbackOrNode is a valid callback function, instance of this is returned;
          * Otherwise a node representation is returned for the passed parameter.
          */
-        node : function (builderCallbackOrNode) {
+        node: function (builderCallbackOrNode) {
             if (builderCallbackOrNode && typeof builderCallbackOrNode !== "function") {
                 return nodeBuilder(builderCallbackOrNode);
             }
@@ -4156,7 +4342,7 @@ Viva.Graph.View.cssGraphics = function () {
          * @returns If builderCallbackOrLink is a valid callback function, instance of this is returned;
          * Otherwise a link representation is returned for the passed parameter.
          */
-        link : function (builderCallbackOrLink) {
+        link: function (builderCallbackOrLink) {
             if (builderCallbackOrLink && typeof builderCallbackOrLink !== "function") {
                 return linkBuilder(builderCallbackOrLink);
             }
@@ -4168,29 +4354,29 @@ Viva.Graph.View.cssGraphics = function () {
         /**
          * Default input manager listens to DOM events to process nodes drag-n-drop
          */
-        inputManager : Viva.Input.domInputManager,
+        inputManager: Viva.Input.domInputManager,
 
         /**
          * Sets translate operation that should be applied to all nodes and links.
          */
-        graphCenterChanged : function (x, y) {
+        graphCenterChanged: function (x, y) {
             offsetX = x;
             offsetY = y;
             updateTransform();
         },
 
-        translateRel : function (dx, dy) {
+        translateRel: function (dx, dy) {
             offsetX += dx;
             offsetY += dy;
             updateTransform();
         },
 
-        scale : function (x, y) {
+        scale: function (x, y) {
             // TODO: implement me
             return 1;
         },
 
-        resetScale : function () {
+        resetScale: function () {
             // TODO: implement me
             return this;
         },
@@ -4198,23 +4384,23 @@ Viva.Graph.View.cssGraphics = function () {
         /**
          * Called every before renderer starts rendering.
          */
-        beginRender : function () {},
+        beginRender: function () {},
 
         /**
          * Called every time when renderer finishes one step of rendering.
          */
-        endRender : function () {},
+        endRender: function () {},
         /**
          * Allows to override default position setter for the node with a new
          * function. newPlaceCallback(node, position) is function which
          * is used by updateNode().
          */
-        placeNode : function (newPlaceCallback) {
+        placeNode: function (newPlaceCallback) {
             nodePositionCallback = newPlaceCallback;
             return this;
         },
 
-        placeLink : function (newPlaceLinkCallback) {
+        placeLink: function (newPlaceLinkCallback) {
             linkPositionCallback = newPlaceLinkCallback;
             return this;
         },
@@ -4223,18 +4409,18 @@ Viva.Graph.View.cssGraphics = function () {
          * Called by Viva.Graph.View.renderer to let concrete graphic output
          * providers prepare to render.
          */
-        init : function (parentContainer) {
+        init: function (parentContainer) {
             container = parentContainer;
             updateTransform();
         },
 
-       /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider prepare to render given link of the graph
-        *
-        * @param linkUI visual representation of the link created by link() execution.
-        */
-        initLink : function (linkUI) {
+        /**
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider prepare to render given link of the graph
+         *
+         * @param linkUI visual representation of the link created by link() execution.
+         */
+        initLink: function (linkUI) {
             if (container.childElementCount > 0) {
                 container.insertBefore(linkUI, container.firstChild);
             } else {
@@ -4242,49 +4428,49 @@ Viva.Graph.View.cssGraphics = function () {
             }
         },
 
-       /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider remove link from rendering surface.
-        *
-        * @param linkUI visual representation of the link created by link() execution.
-        **/
-        releaseLink : function (linkUI) {
+        /**
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider remove link from rendering surface.
+         *
+         * @param linkUI visual representation of the link created by link() execution.
+         **/
+        releaseLink: function (linkUI) {
             container.removeChild(linkUI);
         },
 
-       /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider prepare to render given node of the graph.
-        *
-        * @param nodeUI visual representation of the node created by node() execution.
-        **/
-        initNode : function (nodeUI) {
+        /**
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider prepare to render given node of the graph.
+         *
+         * @param nodeUI visual representation of the node created by node() execution.
+         **/
+        initNode: function (nodeUI) {
             container.appendChild(nodeUI);
         },
 
         /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider remove node from rendering surface.
-        *
-        * @param nodeUI visual representation of the node created by node() execution.
-        **/
-        releaseNode : function (nodeUI) {
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider remove node from rendering surface.
+         *
+         * @param nodeUI visual representation of the node created by node() execution.
+         **/
+        releaseNode: function (nodeUI) {
             container.removeChild(nodeUI);
         },
 
         /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider place given node to recommended position pos {x, y};
-        */
-        updateNodePosition : function (node, pos) {
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider place given node to recommended position pos {x, y};
+         */
+        updateNodePosition: function (node, pos) {
             nodePositionCallback(node, pos);
         },
 
         /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider place given link of the graph
-        */
-        updateLinkPosition : function (link, fromPos, toPos) {
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider place given link of the graph
+         */
+        updateLinkPosition: function (link, fromPos, toPos) {
             linkPositionCallback(link, fromPos, toPos);
         }
     };
@@ -4372,8 +4558,8 @@ Viva.Graph.svg = function (element) {
             }
         } else if (typeof selector === "string") {
             var classSelector = (selector[0] === "."),
-                idSelector    = (selector[0] === "#"),
-                tagSelector   = !classSelector && !idSelector;
+                idSelector = (selector[0] === "#"),
+                tagSelector = !classSelector && !idSelector;
 
             for (i = 0; i < childrenCount; i++) {
                 var el = svgElement.childNodes[i];
@@ -4431,30 +4617,30 @@ Viva.Graph.View.svgGraphics = function () {
         offsetX,
         offsetY,
         actualScale = 1,
-/*jshint unused: false */
+        /*jshint unused: false */
         nodeBuilder = function (node) {
             return Viva.Graph.svg("rect")
-                     .attr("width", 10)
-                     .attr("height", 10)
-                     .attr("fill", "#00a2e8");
+                .attr("width", 10)
+                .attr("height", 10)
+                .attr("fill", "#00a2e8");
         },
 
         nodePositionCallback = function (nodeUI, pos) {
             // TODO: Remove magic 5. It should be halfo of the width or height of the node.
             nodeUI.attr("x", pos.x - 5)
-                  .attr("y", pos.y - 5);
+                .attr("y", pos.y - 5);
         },
 
         linkBuilder = function (link) {
             return Viva.Graph.svg("line")
-                              .attr("stroke", "#999");
+                .attr("stroke", "#999");
         },
 
         linkPositionCallback = function (linkUI, fromPos, toPos) {
             linkUI.attr("x1", fromPos.x)
-                  .attr("y1", fromPos.y)
-                  .attr("x2", toPos.x)
-                  .attr("y2", toPos.y);
+                .attr("y1", fromPos.y)
+                .attr("x2", toPos.x)
+                .attr("y2", toPos.y);
         },
 
         fireRescaled = function (graphics) {
@@ -4481,7 +4667,7 @@ Viva.Graph.View.svgGraphics = function () {
          * @returns If builderCallbackOrNode is a valid callback function, instance of this is returned;
          * Otherwise a node representation is returned for the passed parameter.
          */
-        node : function (builderCallbackOrNode) {
+        node: function (builderCallbackOrNode) {
 
             if (builderCallbackOrNode && typeof builderCallbackOrNode !== "function") {
                 return nodeBuilder(builderCallbackOrNode);
@@ -4503,7 +4689,7 @@ Viva.Graph.View.svgGraphics = function () {
          * @returns If builderCallbackOrLink is a valid callback function, instance of this is returned;
          * Otherwise a link representation is returned for the passed parameter.
          */
-        link : function (builderCallbackOrLink) {
+        link: function (builderCallbackOrLink) {
             if (builderCallbackOrLink && typeof builderCallbackOrLink !== "function") {
                 return linkBuilder(builderCallbackOrLink);
             }
@@ -4517,12 +4703,12 @@ Viva.Graph.View.svgGraphics = function () {
          * function. newPlaceCallback(nodeUI, position) is function which
          * is used by updateNodePosition().
          */
-        placeNode : function (newPlaceCallback) {
+        placeNode: function (newPlaceCallback) {
             nodePositionCallback = newPlaceCallback;
             return this;
         },
 
-        placeLink : function (newPlaceLinkCallback) {
+        placeLink: function (newPlaceLinkCallback) {
             linkPositionCallback = newPlaceLinkCallback;
             return this;
         },
@@ -4530,17 +4716,17 @@ Viva.Graph.View.svgGraphics = function () {
         /**
          * Called every before renderer starts rendering.
          */
-        beginRender : function () {},
+        beginRender: function () {},
 
         /**
          * Called every time when renderer finishes one step of rendering.
          */
-        endRender : function () {},
+        endRender: function () {},
 
         /**
          * Sets translate operation that should be applied to all nodes and links.
          */
-        graphCenterChanged : function (x, y) {
+        graphCenterChanged: function (x, y) {
             offsetX = x;
             offsetY = y;
             updateTransform();
@@ -4549,9 +4735,9 @@ Viva.Graph.View.svgGraphics = function () {
         /**
          * Default input manager listens to DOM events to process nodes drag-n-drop
          */
-        inputManager : Viva.Input.domInputManager,
+        inputManager: Viva.Input.domInputManager,
 
-        translateRel : function (dx, dy) {
+        translateRel: function (dx, dy) {
             var p = svgRoot.createSVGPoint(),
                 t = svgContainer.getCTM(),
                 origin = svgRoot.createSVGPoint().matrixTransform(t.inverse());
@@ -4570,7 +4756,7 @@ Viva.Graph.View.svgGraphics = function () {
             svgContainer.attr("transform", transform);
         },
 
-        scale : function (scaleFactor, scrollPoint) {
+        scale: function (scaleFactor, scrollPoint) {
             var p = svgRoot.createSVGPoint();
             p.x = scrollPoint.x;
             p.y = scrollPoint.y;
@@ -4591,7 +4777,7 @@ Viva.Graph.View.svgGraphics = function () {
             return actualScale;
         },
 
-        resetScale : function () {
+        resetScale: function () {
             actualScale = 1;
             var transform = "matrix(1, 0, 0, 1, 0, 0)";
             svgContainer.attr("transform", transform);
@@ -4599,26 +4785,26 @@ Viva.Graph.View.svgGraphics = function () {
             return this;
         },
 
-       /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider prepare to render.
-        */
-        init : function (container) {
+        /**
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider prepare to render.
+         */
+        init: function (container) {
             svgRoot = Viva.Graph.svg("svg");
 
             svgContainer = Viva.Graph.svg("g")
-                 .attr("buffered-rendering", "dynamic");
+                .attr("buffered-rendering", "dynamic");
 
             svgRoot.appendChild(svgContainer);
             container.appendChild(svgRoot);
             updateTransform();
         },
 
-       /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider release occupied resources.
-        */
-        release : function (container) {
+        /**
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider release occupied resources.
+         */
+        release: function (container) {
             if (svgRoot && container) {
                 container.removeChild(svgRoot);
             }
@@ -4630,8 +4816,10 @@ Viva.Graph.View.svgGraphics = function () {
          *
          * @param linkUI visual representation of the link created by link() execution.
          */
-        initLink : function (linkUI) {
-            if (!linkUI) { return; }
+        initLink: function (linkUI) {
+            if (!linkUI) {
+                return;
+            }
             if (svgContainer.childElementCount > 0) {
                 svgContainer.insertBefore(linkUI, svgContainer.firstChild);
             } else {
@@ -4639,49 +4827,49 @@ Viva.Graph.View.svgGraphics = function () {
             }
         },
 
-       /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider remove link from rendering surface.
-        *
-        * @param linkUI visual representation of the link created by link() execution.
-        **/
-        releaseLink : function (linkUI) {
+        /**
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider remove link from rendering surface.
+         *
+         * @param linkUI visual representation of the link created by link() execution.
+         **/
+        releaseLink: function (linkUI) {
             svgContainer.removeChild(linkUI);
         },
 
-       /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider prepare to render given node of the graph.
-        *
-        * @param nodeUI visual representation of the node created by node() execution.
-        **/
-        initNode : function (nodeUI) {
+        /**
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider prepare to render given node of the graph.
+         *
+         * @param nodeUI visual representation of the node created by node() execution.
+         **/
+        initNode: function (nodeUI) {
             svgContainer.appendChild(nodeUI);
         },
 
-       /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider remove node from rendering surface.
-        *
-        * @param nodeUI visual representation of the node created by node() execution.
-        **/
-        releaseNode : function (nodeUI) {
+        /**
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider remove node from rendering surface.
+         *
+         * @param nodeUI visual representation of the node created by node() execution.
+         **/
+        releaseNode: function (nodeUI) {
             svgContainer.removeChild(nodeUI);
         },
 
-       /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider place given node UI to recommended position pos {x, y};
-        */
-        updateNodePosition : function (nodeUI, pos) {
+        /**
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider place given node UI to recommended position pos {x, y};
+         */
+        updateNodePosition: function (nodeUI, pos) {
             nodePositionCallback(nodeUI, pos);
         },
 
         /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider place given link of the graph. Pos objects are {x, y};
-        */
-        updateLinkPosition : function (link, fromPos, toPos) {
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider place given link of the graph. Pos objects are {x, y};
+         */
+        updateLinkPosition: function (link, fromPos, toPos) {
             linkPositionCallback(link, fromPos, toPos);
         },
 
@@ -4691,7 +4879,7 @@ Viva.Graph.View.svgGraphics = function () {
          * Note: This is internal method specific to this renderer
          * TODO: Rename this to getGraphicsRoot() to be uniform accross graphics classes
          */
-        getSvgRoot : function () {
+        getSvgRoot: function () {
             return svgRoot;
         }
     };
@@ -4715,7 +4903,10 @@ Viva.Graph.View.svgNodeFactory = function (graph) {
         geom = Viva.Graph.geom(),
 
         attachCustomContent = function (nodeUI) {
-            nodeUI.size = {w: 10, h: 10};
+            nodeUI.size = {
+                w: 10,
+                h: 10
+            };
             nodeUI.append("rect")
                 .attr("width", nodeUI.size.w)
                 .attr("height", nodeUI.size.h)
@@ -4729,7 +4920,7 @@ Viva.Graph.View.svgNodeFactory = function (graph) {
 
 
     return {
-        node : function (node) {
+        node: function (node) {
             var nodeUI = Viva.Graph.svg("g");
 
             attachCustomContent(nodeUI, node);
@@ -4737,13 +4928,13 @@ Viva.Graph.View.svgNodeFactory = function (graph) {
             return nodeUI;
         },
 
-        link : function (link) {
+        link: function (link) {
             var fromNode = graph.getNode(link.fromId),
                 nodeUI = fromNode && fromNode.ui;
 
             if (nodeUI && !nodeUI.linksContainer) {
                 var nodeLinks = Viva.Graph.svg("path")
-                                    .attr("stroke", defaultColor);
+                    .attr("stroke", defaultColor);
                 nodeUI.linksContainer = nodeLinks;
                 return nodeLinks;
             }
@@ -4759,7 +4950,7 @@ Viva.Graph.View.svgNodeFactory = function (graph) {
          *  contentCreator and returns it"s custom rectangular size.
          *
          */
-        customContent : function (contentCreator, sizeProvider) {
+        customContent: function (contentCreator, sizeProvider) {
             if (typeof contentCreator !== "function" ||
                 typeof sizeProvider !== "function") {
                 throw "Two functions expected: contentCreator(nodeUI, node) and size(nodeUI)";
@@ -4769,7 +4960,7 @@ Viva.Graph.View.svgNodeFactory = function (graph) {
             nodeSize = sizeProvider;
         },
 
-        placeNode : function (nodeUI, fromNodePos) {
+        placeNode: function (nodeUI, fromNodePos) {
             var linksPath = "",
                 fromNodeSize = nodeSize(nodeUI);
 
@@ -4789,34 +4980,34 @@ Viva.Graph.View.svgNodeFactory = function (graph) {
                     toNodePos = linkedNode.position;
 
                 var from = geom.intersectRect(
-                        fromNodePos.x - fromNodeSize.w / 2, // left
-                        fromNodePos.y - fromNodeSize.h / 2, // top
-                        fromNodePos.x + fromNodeSize.w / 2, // right
-                        fromNodePos.y + fromNodeSize.h / 2, // bottom
-                        fromNodePos.x,
-                        fromNodePos.y,
-                        toNodePos.x,
-                        toNodePos.y
-                    ) || fromNodePos;
+                    fromNodePos.x - fromNodeSize.w / 2, // left
+                    fromNodePos.y - fromNodeSize.h / 2, // top
+                    fromNodePos.x + fromNodeSize.w / 2, // right
+                    fromNodePos.y + fromNodeSize.h / 2, // bottom
+                    fromNodePos.x,
+                    fromNodePos.y,
+                    toNodePos.x,
+                    toNodePos.y
+                ) || fromNodePos;
 
                 var to = geom.intersectRect(
-                        toNodePos.x - toNodeSize.w / 2, // left
-                        toNodePos.y - toNodeSize.h / 2, // top
-                        toNodePos.x + toNodeSize.w / 2, // right
-                        toNodePos.y + toNodeSize.h / 2, // bottom
-                        toNodePos.x,
-                        toNodePos.y,
-                        fromNodePos.x,
-                        fromNodePos.y
-                    ) || toNodePos;
+                    toNodePos.x - toNodeSize.w / 2, // left
+                    toNodePos.y - toNodeSize.h / 2, // top
+                    toNodePos.x + toNodeSize.w / 2, // right
+                    toNodePos.y + toNodeSize.h / 2, // bottom
+                    toNodePos.x,
+                    toNodePos.y,
+                    fromNodePos.x,
+                    fromNodePos.y
+                ) || toNodePos;
 
                 linksPath += "M" + Math.round(from.x) + " " + Math.round(from.y) +
-                             "L" + Math.round(to.x) + " " + Math.round(to.y);
+                    "L" + Math.round(to.x) + " " + Math.round(to.y);
             });
 
             nodeUI.attr("transform",
-                        "translate(" + (fromNodePos.x - fromNodeSize.w / 2) + ", " +
-                         (fromNodePos.y - fromNodeSize.h / 2) + ")");
+                "translate(" + (fromNodePos.x - fromNodeSize.w / 2) + ", " +
+                (fromNodePos.y - fromNodeSize.h / 2) + ")");
             if (linksPath !== "" && nodeUI.linksContainer) {
                 nodeUI.linksContainer.attr("d", linksPath);
             }
@@ -4832,21 +5023,21 @@ Viva.Graph.View.svgNodeFactory = function (graph) {
 
 Viva.Graph.webgl = function (gl) {
     var createShader = function (shaderText, type) {
-            var shader = gl.createShader(type);
-            gl.shaderSource(shader, shaderText);
-            gl.compileShader(shader);
+        var shader = gl.createShader(type);
+        gl.shaderSource(shader, shaderText);
+        gl.compileShader(shader);
 
-            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-                var msg = gl.getShaderInfoLog(shader);
-                window.alert(msg);
-                throw msg;
-            }
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            var msg = gl.getShaderInfoLog(shader);
+            window.alert(msg);
+            throw msg;
+        }
 
-            return shader;
-        };
+        return shader;
+    };
 
     return {
-        createProgram : function (vertexShaderSrc, fragmentShaderSrc) {
+        createProgram: function (vertexShaderSrc, fragmentShaderSrc) {
             var program = gl.createProgram(),
                 vs = createShader(vertexShaderSrc, gl.VERTEX_SHADER),
                 fs = createShader(fragmentShaderSrc, gl.FRAGMENT_SHADER);
@@ -4864,8 +5055,8 @@ Viva.Graph.webgl = function (gl) {
             return program;
         },
 
-        extendArray : function (buffer, itemsInBuffer, elementsPerItem) {
-            if ((itemsInBuffer  + 1) * elementsPerItem > buffer.length) {
+        extendArray: function (buffer, itemsInBuffer, elementsPerItem) {
+            if ((itemsInBuffer + 1) * elementsPerItem > buffer.length) {
                 // Every time we run out of space create new array twice bigger.
                 // TODO: it seems buffer size is limited. Consider using multiple arrays for huge graphs
                 var extendedArray = new Float32Array(buffer.length * elementsPerItem * 2);
@@ -4877,14 +5068,14 @@ Viva.Graph.webgl = function (gl) {
             return buffer;
         },
 
-        copyArrayPart : function (array, to, from, elementsCount) {
+        copyArrayPart: function (array, to, from, elementsCount) {
             var i;
             for (i = 0; i < elementsCount; ++i) {
                 array[to + i] = array[from + i];
             }
         },
 
-        swapArrayPart : function (array, from, to, elementsCount) {
+        swapArrayPart: function (array, from, to, elementsCount) {
             var i;
             for (i = 0; i < elementsCount; ++i) {
                 var tmp = array[from + i];
@@ -4893,7 +5084,7 @@ Viva.Graph.webgl = function (gl) {
             }
         },
 
-        getLocations : function (program, uniformOrAttributeNames) {
+        getLocations: function (program, uniformOrAttributeNames) {
             var foundLocations = {},
                 i;
             for (i = 0; i < uniformOrAttributeNames.length; ++i) {
@@ -4921,7 +5112,7 @@ Viva.Graph.webgl = function (gl) {
             return foundLocations;
         },
 
-        context : gl
+        context: gl
     };
 };
 /**
@@ -4931,7 +5122,7 @@ Viva.Graph.webgl = function (gl) {
  * @author Andrei Kashcha (aka anvaka) / http://anvaka.blogspot.com
  */
 
-Viva.Graph.View.WebglUtils = function () { };
+Viva.Graph.View.WebglUtils = function () {};
 
 /**
  * Parses various color strings and returns color value used in webgl shaders.
@@ -4972,7 +5163,7 @@ Viva.Graph.View.webglLine = function (color) {
          * Gets or sets color of the line. If you set this property externally
          * make sure it always come as integer of 0xRRGGBBAA format
          */
-        color : Viva.Graph.View._webglUtil.parseColor(color)
+        color: Viva.Graph.View._webglUtil.parseColor(color)
     };
 };
 
@@ -4988,12 +5179,12 @@ Viva.Graph.View.webglSquare = function (size, color) {
         /**
          * Gets or sets size of the sqare side.
          */
-        size : typeof size === 'number' ? size : 10,
+        size: typeof size === 'number' ? size : 10,
 
         /**
          * Gets or sets color of the square.
          */
-        color : Viva.Graph.View._webglUtil.parseColor(color)
+        color: Viva.Graph.View._webglUtil.parseColor(color)
     };
 };
 
@@ -5005,26 +5196,27 @@ Viva.Graph.View.webglImage = function (size, src) {
         /**
          * Gets texture index where current image is placed.s
          */
-        _texture : 0,
+        _texture: 0,
 
         /**
          * Gets offset in the texture where current image is placed.
          */
-        _offset : 0,
+        _offset: 0,
 
         /**
          * Gets size of the square with the image.
          */
-        size : typeof size === 'number' ? size : 32,
+        size: typeof size === 'number' ? size : 32,
 
         /**
          * Source of the image. If image is comming not from your domain
          * certain origin restrictions applies.
          * See http://www.khronos.org/registry/webgl/specs/latest/#4.2 for more details.
          */
-        src  : src
+        src: src
     };
-};/**
+};
+/**
  * @fileOverview Defines a naive form of nodes for webglGraphics class.
  * This form allows to change color of node. Shape of nodes is rectangular.
  *
@@ -5090,7 +5282,7 @@ Viva.Graph.View.webglNodeProgram = function () {
         };
 
     return {
-        load : function (glContext) {
+        load: function (glContext) {
             gl = glContext;
             utils = Viva.Graph.webgl(glContext);
 
@@ -5110,7 +5302,7 @@ Viva.Graph.View.webglNodeProgram = function () {
          * @param idx - index of current node.
          * @param pos - new position of the node.
          */
-        position : function (nodeUI, pos) {
+        position: function (nodeUI, pos) {
             var idx = nodeUI.id;
 
             positions[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
@@ -5120,35 +5312,37 @@ Viva.Graph.View.webglNodeProgram = function () {
             colors[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = nodeUI.color;
         },
 
-        updateTransform : function (newTransform) {
+        updateTransform: function (newTransform) {
             sizeDirty = true;
             transform = newTransform;
         },
 
-        updateSize : function (w, h) {
+        updateSize: function (w, h) {
             width = w;
             height = h;
             sizeDirty = true;
         },
 
-        removeNode : function (node) {
-            if (nodesCount > 0) { nodesCount -= 1; }
+        removeNode: function (node) {
+            if (nodesCount > 0) {
+                nodesCount -= 1;
+            }
 
             if (node.id < nodesCount && nodesCount > 0) {
                 // we can use colors as a 'view' into array array buffer.
                 utils.copyArrayPart(colors, node.id * ATTRIBUTES_PER_PRIMITIVE, nodesCount * ATTRIBUTES_PER_PRIMITIVE, ATTRIBUTES_PER_PRIMITIVE);
             }
         },
-/*jshint unused:false */
-        createNode : function (node) {
+        /*jshint unused:false */
+        createNode: function (node) {
             ensureEnoughStorage();
             nodesCount += 1;
         },
 
-        replaceProperties : function (replacedNode, newNode) {},
-/*jshint unused:true */
+        replaceProperties: function (replacedNode, newNode) {},
+        /*jshint unused:true */
 
-        render : function () {
+        render: function () {
             gl.useProgram(program);
             gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
             gl.bufferData(gl.ARRAY_BUFFER, storage, gl.DYNAMIC_DRAW);
@@ -5165,7 +5359,8 @@ Viva.Graph.View.webglNodeProgram = function () {
             gl.drawArrays(gl.POINTS, 0, nodesCount);
         }
     };
-};/**
+};
+/**
  * @fileOverview Defines a naive form of links for webglGraphics class.
  * This form allows to change color of links.
  *
@@ -5218,7 +5413,7 @@ Viva.Graph.View.webglLinkProgram = function () {
 
         ensureEnoughStorage = function () {
             // TODO: this is a duplicate of webglNodeProgram code. Extract it to webgl.js
-            if ((linksCount+1)*BYTES_PER_LINK > storage.byteLength) {
+            if ((linksCount + 1) * BYTES_PER_LINK > storage.byteLength) {
                 // Every time we run out of space create new array twice bigger.
                 // TODO: it seems buffer size is limited. Consider using multiple arrays for huge graphs
                 var extendedStorage = new ArrayBuffer(storage.byteLength * 2),
@@ -5233,7 +5428,7 @@ Viva.Graph.View.webglLinkProgram = function () {
         };
 
     return {
-        load : function (glContext) {
+        load: function (glContext) {
             gl = glContext;
             utils = Viva.Graph.webgl(glContext);
 
@@ -5259,15 +5454,17 @@ Viva.Graph.View.webglLinkProgram = function () {
             colors[offset + 5] = linkUi.color;
         },
 
-        createLink : function (ui) {
+        createLink: function (ui) {
             ensureEnoughStorage();
 
             linksCount += 1;
             frontLinkId = ui.id;
         },
 
-        removeLink : function (ui) {
-            if (linksCount > 0) { linksCount -= 1; }
+        removeLink: function (ui) {
+            if (linksCount > 0) {
+                linksCount -= 1;
+            }
             // swap removed link with the last link. This will give us O(1) performance for links removal:
             if (ui.id < linksCount && linksCount > 0) {
                 // using colors as a view to array buffer is okay here.
@@ -5275,18 +5472,18 @@ Viva.Graph.View.webglLinkProgram = function () {
             }
         },
 
-        updateTransform : function (newTransform) {
+        updateTransform: function (newTransform) {
             sizeDirty = true;
             transform = newTransform;
         },
 
-        updateSize : function (w, h) {
+        updateSize: function (w, h) {
             width = w;
             height = h;
             sizeDirty = true;
         },
 
-        render : function () {
+        render: function () {
             gl.useProgram(program);
             gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
             gl.bufferData(gl.ARRAY_BUFFER, storage, gl.DYNAMIC_DRAW);
@@ -5305,7 +5502,7 @@ Viva.Graph.View.webglLinkProgram = function () {
             frontLinkId = linksCount - 1;
         },
 
-        bringToFront : function (link) {
+        bringToFront: function (link) {
             if (frontLinkId > link.id) {
                 utils.swapArrayPart(positions, link.id * ATTRIBUTES_PER_PRIMITIVE, frontLinkId * ATTRIBUTES_PER_PRIMITIVE, ATTRIBUTES_PER_PRIMITIVE);
             }
@@ -5314,7 +5511,7 @@ Viva.Graph.View.webglLinkProgram = function () {
             }
         },
 
-        getFrontLinkId : function () {
+        getFrontLinkId: function () {
             return frontLinkId;
         }
     };
@@ -5364,11 +5561,15 @@ Viva.Graph.View.webglAtlas = function (tilesPerTexture) {
         },
         getTileCoordinates = function (absolutePosition) {
             var textureNumber = (absolutePosition / tilesPerTexture) << 0,
-                localTileNumber =  (absolutePosition % tilesPerTexture),
+                localTileNumber = (absolutePosition % tilesPerTexture),
                 row = (localTileNumber / tilesPerRow) << 0,
                 col = (localTileNumber % tilesPerRow);
 
-            return {textureNumber : textureNumber, row : row, col: col};
+            return {
+                textureNumber: textureNumber,
+                row: row,
+                col: col
+            };
         },
         markDirtyNow = function () {
             that.isDirty = true;
@@ -5403,7 +5604,9 @@ Viva.Graph.View.webglAtlas = function (tilesPerTexture) {
 
         drawAt = function (tileNumber, img, callback) {
             var tilePosition = getTileCoordinates(tileNumber),
-                coordinates = { offset : tileNumber };
+                coordinates = {
+                    offset: tileNumber
+                };
 
             if (tilePosition.textureNumber >= textures.length) {
                 createTexture();
@@ -5429,12 +5632,12 @@ Viva.Graph.View.webglAtlas = function (tilesPerTexture) {
          * indicates whether atlas has changed texture in it. If true then
          * some of the textures has isDirty flag set as well.
          */
-        isDirty : false,
+        isDirty: false,
 
         /**
          * Clears any signs of atlas changes.
          */
-        clearDirty : function () {
+        clearDirty: function () {
             var i;
             this.isDirty = false;
             for (i = 0; i < textures.length; ++i) {
@@ -5445,9 +5648,11 @@ Viva.Graph.View.webglAtlas = function (tilesPerTexture) {
         /**
          * Removes given url from colleciton of tiles in the atlas.
          */
-        remove : function (imgUrl) {
+        remove: function (imgUrl) {
             var coordinates = loadedImages[imgUrl];
-            if (!coordinates) { return false; }
+            if (!coordinates) {
+                return false;
+            }
             delete loadedImages[imgUrl];
             lastLoadedIdx -= 1;
 
@@ -5472,7 +5677,7 @@ Viva.Graph.View.webglAtlas = function (tilesPerTexture) {
         /**
          * Gets all textures in the atlas.
          */
-        getTextures : function () {
+        getTextures: function () {
             return textures; // I trust you...
         },
 
@@ -5484,7 +5689,7 @@ Viva.Graph.View.webglAtlas = function (tilesPerTexture) {
          * Absolute means it can be larger than tilesPerTexture parameter, and in that
          * case clients should get next texture in getTextures() collection.
          */
-        getCoordinates : function (imgUrl) {
+        getCoordinates: function (imgUrl) {
             return loadedImages[imgUrl];
         },
 
@@ -5492,7 +5697,7 @@ Viva.Graph.View.webglAtlas = function (tilesPerTexture) {
          * Asynchronously Loads the image to the atlas. Cross-domain security
          * limitation applies.
          */
-        load : function (imgUrl, callback) {
+        load: function (imgUrl, callback) {
             if (loadedImages.hasOwnProperty(imgUrl)) {
                 callback(loadedImages[imgUrl]);
             } else {
@@ -5624,7 +5829,7 @@ Viva.Graph.View.webglImageNodeProgram = function () {
         };
 
     return {
-        load : function (glContext) {
+        load: function (glContext) {
             gl = glContext;
             utils = Viva.Graph.webgl(glContext);
 
@@ -5648,7 +5853,7 @@ Viva.Graph.View.webglImageNodeProgram = function () {
          * @param idx - index of current node.
          * @param pos - new position of the node.
          */
-        position : function (nodeUI, pos) {
+        position: function (nodeUI, pos) {
             var idx = nodeUI.id * ATTRIBUTES_PER_PRIMITIVE;
             nodes[idx] = pos.x - nodeUI.size;
             nodes[idx + 1] = pos.y - nodeUI.size;
@@ -5675,7 +5880,7 @@ Viva.Graph.View.webglImageNodeProgram = function () {
             nodes[idx + 17] = nodeUI._offset * 4 + 3;
         },
 
-        createNode : function (ui) {
+        createNode: function (ui) {
             nodes = utils.extendArray(nodes, nodesCount, ATTRIBUTES_PER_PRIMITIVE);
             nodesCount += 1;
 
@@ -5691,8 +5896,10 @@ Viva.Graph.View.webglImageNodeProgram = function () {
             }
         },
 
-        removeNode : function (nodeUI) {
-            if (nodesCount > 0) { nodesCount -= 1; }
+        removeNode: function (nodeUI) {
+            if (nodesCount > 0) {
+                nodesCount -= 1;
+            }
 
             if (nodeUI.id < nodesCount && nodesCount > 0) {
                 if (nodeUI.src) {
@@ -5703,22 +5910,22 @@ Viva.Graph.View.webglImageNodeProgram = function () {
             }
         },
 
-        replaceProperties : function (replacedNode, newNode) {
+        replaceProperties: function (replacedNode, newNode) {
             newNode._offset = replacedNode._offset;
         },
 
-        updateTransform : function (newTransform) {
+        updateTransform: function (newTransform) {
             sizeDirty = true;
             transform = newTransform;
         },
 
-        updateSize : function (w, h) {
+        updateSize: function (w, h) {
             width = w;
             height = h;
             sizeDirty = true;
         },
 
-        render : function () {
+        render: function () {
             gl.useProgram(program);
             gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
             gl.bufferData(gl.ARRAY_BUFFER, nodes, gl.DYNAMIC_DRAW);
@@ -5737,7 +5944,8 @@ Viva.Graph.View.webglImageNodeProgram = function () {
             gl.drawArrays(gl.TRIANGLES, 0, nodesCount * 6);
         }
     };
-};/**
+};
+/**
  * @fileOverview Defines a graph renderer that uses WebGL based drawings.
  *
  * @author Andrei Kashcha (aka anvaka) / http://anvaka.blogspot.com
@@ -5757,14 +5965,14 @@ Viva.Graph.View = Viva.Graph.View || {};
 
 Viva.Graph.View.webglGraphics = function (options) {
     options = Viva.lazyExtend(options, {
-        enableBlending : true,
-        preserveDrawingBuffer : false,
+        enableBlending: true,
+        preserveDrawingBuffer: false,
         clearColor: false,
-        clearColorValue : {
-            r : 1,
-            g : 1,
-            b : 1,
-            a : 1
+        clearColorValue: {
+            r: 1,
+            g: 1,
+            b: 1,
+            a: 1
         }
     });
 
@@ -5784,7 +5992,7 @@ Viva.Graph.View.webglGraphics = function (options) {
 
         linkProgram = Viva.Graph.View.webglLinkProgram(),
         nodeProgram = Viva.Graph.View.webglNodeProgram(),
-/*jshint unused: false */
+        /*jshint unused: false */
         nodeUIBuilder = function (node) {
             return Viva.Graph.View.webglSquare(); // Just make a square, using provided gl context (a nodeProgram);
         },
@@ -5792,7 +6000,7 @@ Viva.Graph.View.webglGraphics = function (options) {
         linkUIBuilder = function (link) {
             return Viva.Graph.View.webglLine(0xb3b3b3ff);
         },
-/*jshint unused: true */
+        /*jshint unused: true */
         updateTransformUniform = function () {
             linkProgram.updateTransform(transform);
             nodeProgram.updateTransform(transform);
@@ -5800,18 +6008,25 @@ Viva.Graph.View.webglGraphics = function (options) {
 
         resetScaleInternal = function () {
             transform = [1, 0, 0, 0,
-                        0, 1, 0, 0,
-                        0, 0, 1, 0,
-                        0, 0, 0, 1];
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1
+            ];
         },
 
         updateSize = function () {
             if (container && graphicsRoot) {
                 width = graphicsRoot.width = Math.max(container.offsetWidth, 1);
                 height = graphicsRoot.height = Math.max(container.offsetHeight, 1);
-                if (gl) { gl.viewport(0, 0, width, height); }
-                if (linkProgram) { linkProgram.updateSize(width / 2, height / 2); }
-                if (nodeProgram) { nodeProgram.updateSize(width / 2, height / 2); }
+                if (gl) {
+                    gl.viewport(0, 0, width, height);
+                }
+                if (linkProgram) {
+                    linkProgram.updateSize(width / 2, height / 2);
+                }
+                if (nodeProgram) {
+                    nodeProgram.updateSize(width / 2, height / 2);
+                }
             }
         },
 
@@ -5853,7 +6068,7 @@ Viva.Graph.View.webglGraphics = function (options) {
          * @returns If builderCallbackOrNode is a valid callback function, instance of this is returned;
          * Otherwise a node representation is returned for the passed parameter.
          */
-        node : function (builderCallbackOrNode) {
+        node: function (builderCallbackOrNode) {
             if (builderCallbackOrNode && typeof builderCallbackOrNode !== "function") {
                 return nodeBuilderInternal(builderCallbackOrNode); // create ui for node using current nodeUIBuilder
             }
@@ -5874,7 +6089,7 @@ Viva.Graph.View.webglGraphics = function (options) {
          * @returns If builderCallbackOrLink is a valid callback function, instance of this is returned;
          * Otherwise a link representation is returned for the passed parameter.
          */
-        link : function (builderCallbackOrLink) {
+        link: function (builderCallbackOrLink) {
 
             if (builderCallbackOrLink && typeof builderCallbackOrLink !== "function") {
                 return linkBuilderInternal(builderCallbackOrLink);
@@ -5889,12 +6104,12 @@ Viva.Graph.View.webglGraphics = function (options) {
          * function. newPlaceCallback(nodeUI, position) is function which
          * is used by updateNodePosition().
          */
-        placeNode : function (newPlaceCallback) {
+        placeNode: function (newPlaceCallback) {
             userPlaceNodeCallback = newPlaceCallback;
             return this;
         },
 
-        placeLink : function (newPlaceLinkCallback) {
+        placeLink: function (newPlaceLinkCallback) {
             userPlaceLinkCallback = newPlaceLinkCallback;
             return this;
         },
@@ -5902,12 +6117,12 @@ Viva.Graph.View.webglGraphics = function (options) {
         /**
          * Custom input manager listens to mouse events to process nodes drag-n-drop inside WebGL canvas
          */
-        inputManager : Viva.Input.webglInputManager,
+        inputManager: Viva.Input.webglInputManager,
 
         /**
          * Called every time before renderer starts rendering.
          */
-        beginRender : function () {
+        beginRender: function () {
             // this function could be replaced by this.init, 
             // based on user options.
         },
@@ -5915,7 +6130,7 @@ Viva.Graph.View.webglGraphics = function (options) {
         /**
          * Called every time when renderer finishes one step of rendering.
          */
-        endRender : function () {
+        endRender: function () {
             if (linksCount > 0) {
                 linkProgram.render();
             }
@@ -5924,7 +6139,7 @@ Viva.Graph.View.webglGraphics = function (options) {
             }
         },
 
-        bringLinkToFront : function (linkUI) {
+        bringLinkToFront: function (linkUI) {
             var frontLinkId = linkProgram.getFrontLinkId(),
                 srcLinkId,
                 temp;
@@ -5941,39 +6156,37 @@ Viva.Graph.View.webglGraphics = function (options) {
                 links[srcLinkId].ui.id = srcLinkId;
             }
         },
-/*jshint unused: false */
+        /*jshint unused: false */
         /**
          * Sets translate operation that should be applied to all nodes and links.
          */
-        graphCenterChanged : function (x, y) {
+        graphCenterChanged: function (x, y) {
             updateSize();
         },
 
-       /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider prepare to render given link of the graph
-        *
-        * @param linkUI visual representation of the link created by link() execution.
-        */
-        initLink : function (linkUI) {
-        },
-       /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider prepare to render given node of the graph.
-        *
-        * @param nodeUI visual representation of the node created by node() execution.
-        **/
-        initNode : function (nodeUI) {
-        },
-/*jshint unused: true */
+        /**
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider prepare to render given link of the graph
+         *
+         * @param linkUI visual representation of the link created by link() execution.
+         */
+        initLink: function (linkUI) {},
+        /**
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider prepare to render given node of the graph.
+         *
+         * @param nodeUI visual representation of the node created by node() execution.
+         **/
+        initNode: function (nodeUI) {},
+        /*jshint unused: true */
 
-        translateRel : function (dx, dy) {
+        translateRel: function (dx, dy) {
             transform[12] += (2 * transform[0] * dx / width) / transform[0];
             transform[13] -= (2 * transform[5] * dy / height) / transform[5];
             updateTransformUniform();
         },
 
-        scale : function (scaleFactor, scrollPoint) {
+        scale: function (scaleFactor, scrollPoint) {
             // Transform scroll point to clip-space coordinates:
             var cx = 2 * scrollPoint.x / width - 1,
                 cy = 1 - (2 * scrollPoint.y) / height;
@@ -5993,7 +6206,7 @@ Viva.Graph.View.webglGraphics = function (options) {
             return transform[0];
         },
 
-        resetScale : function () {
+        resetScale: function () {
             resetScaleInternal();
 
             if (gl) {
@@ -6006,11 +6219,11 @@ Viva.Graph.View.webglGraphics = function (options) {
             return this;
         },
 
-       /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider prepare to render.
-        */
-        init : function (c) {
+        /**
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider prepare to render.
+         */
+        init: function (c) {
             var contextParameters = {};
 
             if (options.preserveDrawingBuffer) {
@@ -6060,33 +6273,35 @@ Viva.Graph.View.webglGraphics = function (options) {
         },
 
         /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider release occupied resources.
-        */
-        release : function (container) {
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider release occupied resources.
+         */
+        release: function (container) {
             if (graphicsRoot && container) {
                 container.removeChild(graphicsRoot);
                 // TODO: anything else?
             }
         },
 
-       /**
-        * Checks whether webgl is supported by this browser.
-        */
-        isSupported : function () {
+        /**
+         * Checks whether webgl is supported by this browser.
+         */
+        isSupported: function () {
             var c = window.document.createElement("canvas"),
                 gl = c && c.getContext && c.getContext("experimental-webgl");
             return gl;
         },
 
-       /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider remove link from rendering surface.
-        *
-        * @param linkUI visual representation of the link created by link() execution.
-        **/
-        releaseLink : function (linkToRemove) {
-            if (linksCount > 0) { linksCount -= 1; }
+        /**
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider remove link from rendering surface.
+         *
+         * @param linkUI visual representation of the link created by link() execution.
+         **/
+        releaseLink: function (linkToRemove) {
+            if (linksCount > 0) {
+                linksCount -= 1;
+            }
 
             linkProgram.removeLink(linkToRemove);
 
@@ -6103,14 +6318,16 @@ Viva.Graph.View.webglGraphics = function (options) {
             }
         },
 
-       /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider remove node from rendering surface.
-        *
-        * @param nodeUI visual representation of the node created by node() execution.
-        **/
-        releaseNode : function (nodeUI) {
-            if (nodesCount > 0) { nodesCount -= 1; }
+        /**
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider remove node from rendering surface.
+         *
+         * @param nodeUI visual representation of the node created by node() execution.
+         **/
+        releaseNode: function (nodeUI) {
+            if (nodesCount > 0) {
+                nodesCount -= 1;
+            }
 
             nodeProgram.removeNode(nodeUI);
 
@@ -6133,11 +6350,11 @@ Viva.Graph.View.webglGraphics = function (options) {
             }
         },
 
-       /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider place given node UI to recommended position pos {x, y};
-        */
-        updateNodePosition : function (nodeUI, pos) {
+        /**
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider place given node UI to recommended position pos {x, y};
+         */
+        updateNodePosition: function (nodeUI, pos) {
             // WebGL coordinate system is different. Would be better
             // to have this transform in the shader code, but it would
             // require every shader to be updated..
@@ -6150,10 +6367,10 @@ Viva.Graph.View.webglGraphics = function (options) {
         },
 
         /**
-        * Called by Viva.Graph.View.renderer to let concrete graphic output
-        * provider place given link of the graph. Pos objects are {x, y};
-        */
-        updateLinkPosition : function (link, fromPos, toPos) {
+         * Called by Viva.Graph.View.renderer to let concrete graphic output
+         * provider place given link of the graph. Pos objects are {x, y};
+         */
+        updateLinkPosition: function (link, fromPos, toPos) {
             // WebGL coordinate system is different. Would be better
             // to have this transform in the shader code, but it would
             // require every shader to be updated..
@@ -6169,7 +6386,7 @@ Viva.Graph.View.webglGraphics = function (options) {
         /**
          * Returns root element which hosts graphics.
          */
-        getGraphicsRoot : function (callbackWhenReady) {
+        getGraphicsRoot: function (callbackWhenReady) {
             // todo: should fire an event, instead of having this context.
             if (typeof callbackWhenReady === "function") {
                 if (graphicsRoot) {
@@ -6186,7 +6403,7 @@ Viva.Graph.View.webglGraphics = function (options) {
          *
          * @param newProgram to use for nodes.
          */
-        setNodeProgram : function (newProgram) {
+        setNodeProgram: function (newProgram) {
             if (!gl && newProgram) {
                 // Nothing created yet. Just set shader to the new one
                 // and let initialization logic take care about the rest.
@@ -6202,7 +6419,7 @@ Viva.Graph.View.webglGraphics = function (options) {
          *
          * @param newProgram to use for links.
          */
-        setLinkProgram : function (newProgram) {
+        setLinkProgram: function (newProgram) {
             if (!gl && newProgram) {
                 // Nothing created yet. Just set shader to the new one
                 // and let initialization logic take care about the rest.
@@ -6212,7 +6429,7 @@ Viva.Graph.View.webglGraphics = function (options) {
                 // TODO: unload old shader and reinit.
             }
         },
-        getGraphCoordinates : function (graphicsRootPos) {
+        getGraphCoordinates: function (graphicsRootPos) {
             // TODO: could be a problem when container has margins?
             // to save memory we modify incoming parameter:
             // point in clipspace coordinates:
@@ -6233,7 +6450,8 @@ Viva.Graph.View.webglGraphics = function (options) {
     Viva.Graph.Utils.events(graphics).extend();
 
     return graphics;
-};/**
+};
+/**
  * Monitors graph-related mouse input in webgl graphics and notifies subscribers.
  *
  * @param {Viva.Graph.View.webglGraphics} webglGraphics
@@ -6251,7 +6469,7 @@ Viva.Graph.webglInputEvents = function (webglGraphics, graph) {
                     half = node.ui.size;
 
                 return pos.x - half < x && x < pos.x + half &&
-                       pos.y - half < y && y < pos.y + half;
+                    pos.y - half < y && y < pos.y + half;
             }
 
             return true;
@@ -6287,12 +6505,17 @@ Viva.Graph.webglInputEvents = function (webglGraphics, graph) {
             var i, stopPropagation;
             for (i = 0; i < callbacksChain.length; i += 1) {
                 stopPropagation = callbacksChain[i].apply(undefined, args);
-                if (stopPropagation) { return true; }
+                if (stopPropagation) {
+                    return true;
+                }
             }
         },
 
         startListen = function (root) {
-            var pos = {x : 0, y : 0},
+            var pos = {
+                    x: 0,
+                    y: 0
+                },
                 lastFound = null,
                 lastClickTime = +new Date(),
 
@@ -6338,7 +6561,9 @@ Viva.Graph.webglInputEvents = function (webglGraphics, graph) {
                         lastFound = null;
                     }
 
-                    if (cancelBubble) { stopPropagation(e); }
+                    if (cancelBubble) {
+                        stopPropagation(e);
+                    }
                 });
 
             root.addEventListener('mousedown',
@@ -6365,7 +6590,9 @@ Viva.Graph.webglInputEvents = function (webglGraphics, graph) {
                     } else {
                         lastFound = null;
                     }
-                    if (cancelBubble) { stopPropagation(e); }
+                    if (cancelBubble) {
+                        stopPropagation(e);
+                    }
                 });
 
             root.addEventListener('mouseup',
@@ -6400,52 +6627,52 @@ Viva.Graph.webglInputEvents = function (webglGraphics, graph) {
     webglGraphics.getGraphicsRoot(startListen);
 
     webglGraphics.webglInputEvents = {
-        mouseEnter : function (callback) {
+        mouseEnter: function (callback) {
             if (typeof callback === 'function') {
                 mouseEnterCallback.push(callback);
             }
             return this;
         },
-        mouseLeave : function (callback) {
+        mouseLeave: function (callback) {
             if (typeof callback === 'function') {
                 mouseLeaveCallback.push(callback);
             }
             return this;
         },
-        mouseDown : function (callback) {
+        mouseDown: function (callback) {
             if (typeof callback === 'function') {
                 mouseDownCallback.push(callback);
             }
             return this;
         },
-        mouseUp : function (callback) {
+        mouseUp: function (callback) {
             if (typeof callback === 'function') {
                 mouseUpCallback.push(callback);
             }
             return this;
         },
-        mouseMove : function (callback) {
+        mouseMove: function (callback) {
             if (typeof callback === 'function') {
                 mouseMoveCallback.push(callback);
             }
             return this;
         },
-        click : function (callback) {
+        click: function (callback) {
             if (typeof callback === 'function') {
                 clickCallback.push(callback);
             }
             return this;
         },
-        dblClick : function (callback) {
+        dblClick: function (callback) {
             if (typeof callback === 'function') {
                 dblClickCallback.push(callback);
             }
             return this;
         },
-        mouseCapture : function (node) {
+        mouseCapture: function (node) {
             mouseCapturedNode = node;
         },
-        releaseMouseCapture : function () {
+        releaseMouseCapture: function () {
             mouseCapturedNode = null;
         }
     };
@@ -6461,7 +6688,10 @@ Viva.Input.webglInputManager = function (graph, graphics) {
     var inputEvents = Viva.Graph.webglInputEvents(graphics, graph),
         draggedNode = null,
         internalHandlers = {},
-        pos = {x : 0, y : 0};
+        pos = {
+            x: 0,
+            y: 0
+        };
 
     inputEvents.mouseDown(function (node, e) {
         draggedNode = node;
@@ -6489,7 +6719,10 @@ Viva.Input.webglInputManager = function (graph, graphics) {
         if (draggedNode) {
             var handlers = internalHandlers[draggedNode.ui.id];
             if (handlers && handlers.onDrag) {
-                handlers.onDrag(e, {x : e.clientX - pos.x, y : e.clientY - pos.y });
+                handlers.onDrag(e, {
+                    x: e.clientX - pos.x,
+                    y: e.clientY - pos.y
+                });
             }
 
             pos.x = e.clientX;
@@ -6510,7 +6743,7 @@ Viva.Input.webglInputManager = function (graph, graphics) {
          *   onDrag: function(e, offset),
          *   onStop: function()
          */
-        bindDragNDrop : function (node, handlers) {
+        bindDragNDrop: function (node, handlers) {
             internalHandlers[node.ui.id] = handlers;
         }
     };
