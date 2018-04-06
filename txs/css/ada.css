@@ -1,0 +1,34 @@
+body {
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.input-node {
+    color: green;
+}
+
+.output-node {
+    color: red;
+}
+
+.input-output-node {
+    color: orange;
+}
+
+.transaction-node {
+    color: blue;
+}
+
+#output {
+    display: none;
+}
+
+#info {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    width: 300px;
+    background-color: #ccc;
+    padding: 4px;
+}
