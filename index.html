@@ -56,6 +56,11 @@
             node.ui.size = getNodeSize(node);
         })
     });
+    
+    window.addEventListener("load", init, false);
+    window.l = layout;
+    window.g = graph;
+    window.r = renderer;
 </script>
 
 </html>

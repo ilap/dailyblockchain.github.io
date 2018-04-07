@@ -6,6 +6,42 @@ var graphics = Viva.Graph.View.webglGraphics();
 //client.registerMethod("getAllTxs", "http://cardanoexplorer.com/api/txs/last", "GET");
 //client.registerMethod("getTxSummary", "http://cardanoexplorer.com/api/txs/summary/${id}", "GET");
 
+var balance = 0;
+var url = "https://cardanoexplorer.com/api/addresses/summary/";
+var address = "DdzFFzCqrht6thD7LEUKncA5UmtCbPSK8cBTTB7vckcM2RJyA8PcEw7igjcvg7uy3cqtqyVB7j15aswfcvs9LmMqJJiaJUmpsQQeMK56";
+
+
+$.ajax({
+    //url:"http://blockchain.info/address/"+id+"?format=json&limit=1&cors=true",
+    //url:"http://blockchain.info/rawblock/123?cors=true&format=json",
+    url: "https://cardanoexplorer.com/api/addresses/summary/" + address ,
+    jsonp: "callback",
+    jsonpCallback: "cb",
+    type: 'GET',
+    //async: false,
+    dataType: "text/plain", //"jsonp",
+    data: {
+       format: 'json'
+    },
+    success: function (data) {
+        console.log("COOOL: ", data)
+    }
+});
+
+function cb(json){
+    console.log(json);
+}
+/*
+  
+  $.ajax({
+    url: url+address,
+    dataType: "jsonp"
+  });
+  */
+
+//writeToScreen("XXXXXXXX: ", balance)
+//return;
+
 var args = {
     path: {
         "id": "abd8c6ee1ea138a532b4bc25976a011c84c942c41203e943fe5f6c6f5e94a341"
@@ -450,7 +486,3 @@ var node = {}
 });*/
  }
 }
-window.addEventListener("load", init, false);
-window.l = layout;
-window.g = graph;
-window.r = renderer;
